@@ -44,10 +44,22 @@ namespace Extender
 
     public static class Sizes
     {
-        public static int CompareAreaTo(this Size a, Size b)
+        public static int CompareAreaTo(this System.Drawing.Size a, System.Drawing.Size b)
         {
             int a_area = a.Width * a.Height;
             int b_area = b.Width * b.Height;
+
+            if (a_area > b_area)
+                return 1;
+            else if (a_area == b_area)
+                return 0;
+            else
+                return -1;
+        }
+        public static int CompareAreaTo(this System.Windows.Size a, System.Windows.Size b)
+        {
+            double a_area = a.Width * a.Height;
+            double b_area = b.Width * b.Height;
 
             if (a_area > b_area)
                 return 1;
@@ -273,6 +285,24 @@ namespace Extender
             {
                 action();
             }
+        }
+    }
+
+    public static class ObservableCollections
+    {
+        /// <summary>
+        /// Removes all items in a collection based on a predicate.
+        /// </summary>
+        /// <returns>Number of removed items.</returns>
+        public static int RemoveAll<T>(this System.Collections.ObjectModel.ObservableCollection<T> collection,
+                                       Func<T, bool> predicate)
+        {
+            var removals = collection.Where(predicate).ToArray();
+
+            foreach(var item in removals)
+                collection.Remove(item);
+
+            return removals.Length;
         }
     }
 }
