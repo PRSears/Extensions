@@ -44,6 +44,42 @@ namespace Extender
 
     public static class Sizes
     {
+        public static bool WidthIsLongEdge(this System.Drawing.Size size)
+        {
+            return (size.Width > size.Height) ? true : false;
+        }
+
+        public static bool WidthIsLongEdge(this System.Windows.Size size)
+        {
+            return (size.Width > size.Height) ? true : false;
+        }
+        
+        public static double AspectRatio(this System.Windows.Size size)
+        {
+            return ((double)size.Width / (double)size.Height);
+        }
+
+        public static double AspectRatio(this System.Drawing.Size size)
+        {
+            return ((double)size.Width / (double)size.Height);
+        }
+        
+        /// <returns>
+        /// Returns the length of the longest edge of this size.
+        /// </returns>
+        public static double LongEdge(this System.Windows.Size size)
+        {
+            return (size.WidthIsLongEdge()) ? size.Width : size.Height;
+        }
+
+        /// <returns>
+        /// Returns the length of the longest edge of this size.
+        /// </returns>
+        public static int LongEdge(this System.Drawing.Size size)
+        {
+            return (size.WidthIsLongEdge()) ? size.Width : size.Height;
+        }
+
         public static int CompareAreaTo(this System.Drawing.Size a, System.Drawing.Size b)
         {
             int a_area = a.Width * a.Height;
@@ -72,6 +108,17 @@ namespace Extender
 
     public static class Rectangles
     {
+        public static bool IsHorizontal(this Rectangle rect)
+        {
+            if (rect.Width > rect.Height)   return true;
+            else                            return false;
+        }
+
+        public static bool IsVertical(this Rectangle rect)
+        {
+            return !IsHorizontal(rect);
+        }
+
         public static Point GetCenter(this Rectangle rect)
         {
             return new Point
@@ -100,7 +147,8 @@ namespace Extender
     }
 
     public static class Bitmaps
-    {/// <summary>
+    {
+        /// <summary>
         /// Creates a copy of this Bitmap and resizes it.
         /// Does not presevce aspect ratio, or performs any translations.
         /// </summary>
@@ -129,7 +177,7 @@ namespace Extender
             if (image.Size.Equals(targetSize))
                 return image;
 
-            Size scaleFitWidth = Bitmaps.FitWidthSize(image.Size, targetSize);
+            Size scaleFitWidth  = Bitmaps.FitWidthSize(image.Size, targetSize);
             Size scaleFitHeight = Bitmaps.FitHeightSize(image.Size, targetSize);
 
             Bitmap scaled;
@@ -157,10 +205,50 @@ namespace Extender
 
             //
             // Crop to fit targetSize if neccessary
-            Bitmap final = (scaled.Size.Equals(targetSize)) ? scaled : scaled.CropCenteredFill(targetSize);
+            Bitmap final = (scaled.Size.Equals(targetSize)) ? (Bitmap)scaled.Clone() : scaled.CropCenteredFill(targetSize);
             scaled.Dispose();
 
             return final;
+        }
+
+        /// <summary>
+        /// Resizes the Bitmap so the longest edge matches targetLength.
+        /// </summary>
+        /// <param name="targetLength">The length, in pixels, of the longest side after resize.</param>
+        /// <returns>Copy of this Bitmap resized to fit the longest edge inside targetLength.</returns>
+        public static Bitmap ResizeToLongEdge(this Bitmap image, double targetLength)
+        {
+            if (image.Size.WidthIsLongEdge()) // make sure resizing is neccessary
+            {
+                if (image.Width == targetLength) return image;
+            }
+            else
+            {
+                if (image.Height == targetLength) return image;
+            }
+
+            return image.ResizeFill(
+                         FitLongEdgeSize(image.Size, targetLength));
+        }
+
+        /// <summary>
+        /// Resizes the Bitmap so the longest edge matches targetLength.
+        /// </summary>
+        /// <param name="targetLength">The length, in pixels, of the longest side after resize.</param>
+        /// <returns>Copy of this Bitmap resized to fit the longest edge inside targetLength.</returns>
+        public static Bitmap ResizeToLongEdge(this Bitmap image, int targetLength)
+        {
+            return ResizeToLongEdge(image, (double)targetLength);
+        }
+
+        /// <summary>
+        /// Resizes the Bitmap so the longest edge matches targetLength.
+        /// </summary>
+        /// <param name="targetLength">The length, in pixels, of the longest side after resize.</param>
+        /// <returns>Copy of this Bitmap resized to fit the longest edge inside targetLength.</returns>
+        public static Bitmap ResizeToLongEdge(this Bitmap image, float targetLength)
+        {
+            return ResizeToLongEdge(image, (double)targetLength);
         }
 
         /// <summary>
@@ -274,6 +362,63 @@ namespace Extender
                     (int)Math.Round(imageSize.Width * multiplier),
                     targetSize.Height
                 );
+        }
+
+        private static Size FitLongEdgeSize(Size imageSize, double targetLength)
+        {
+            if(imageSize.AspectRatio() >= 0)
+            {
+                // Width is longer than height
+                double multiplier = ((double)targetLength / (double)imageSize.Width);
+
+                return new Size
+                    (
+                        (int)Math.Round(targetLength),
+                        (int)Math.Round(imageSize.Height * multiplier)
+                    );
+            }
+            else
+            {
+                // Height is longer than width
+                double multiplier = ((double)targetLength / (double)imageSize.Height);
+
+                return new Size
+                    (
+                        (int)Math.Round(imageSize.Width * multiplier),
+                        (int)Math.Round(targetLength)
+                    );
+            }
+        }
+    }
+
+    public static class Images
+    {
+        /// <summary>
+        /// Gets this image's ImageFormat through brute force comparisons.
+        /// </summary>
+        /// <returns>The ImageFormat for this image.</returns>
+        public static System.Drawing.Imaging.ImageFormat GetImageFormat(this System.Drawing.Image img)
+        {
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg))
+                return System.Drawing.Imaging.ImageFormat.Jpeg;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Bmp))
+                return System.Drawing.Imaging.ImageFormat.Bmp;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png))
+                return System.Drawing.Imaging.ImageFormat.Png;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Emf))
+                return System.Drawing.Imaging.ImageFormat.Emf;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Exif))
+                return System.Drawing.Imaging.ImageFormat.Exif;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Gif))
+                return System.Drawing.Imaging.ImageFormat.Gif;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Icon))
+                return System.Drawing.Imaging.ImageFormat.Icon;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.MemoryBmp))
+                return System.Drawing.Imaging.ImageFormat.MemoryBmp;
+            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Tiff))
+                return System.Drawing.Imaging.ImageFormat.Tiff;
+            else
+                return System.Drawing.Imaging.ImageFormat.Wmf;    
         }
     }
 
