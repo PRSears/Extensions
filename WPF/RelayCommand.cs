@@ -47,4 +47,41 @@ namespace Extender.WPF
             this.methodToExecute.Invoke();
         }
     }
+
+    public class RelayFunction : ICommand
+    {
+        private Func<object, bool> FunctionToExecute;
+        private Func<bool> CanExecuteEvaluator;
+       
+        public event EventHandler CanExecuteChanged
+        {
+            add     { CommandManager.RequerySuggested += value; }
+            remove  { CommandManager.RequerySuggested -= value; }
+        }
+
+        public RelayFunction(Func<object, bool> functionToExecute, Func<bool> canExecuteEvaluator)
+        {
+            this.FunctionToExecute      = functionToExecute;
+            this.CanExecuteEvaluator    = canExecuteEvaluator;
+        }
+        public RelayFunction(Func<object, bool> functionToExecute) : this(functionToExecute, null) { }
+
+        public bool CanExecute(object parameter)
+        {
+            if (this.CanExecuteEvaluator == null)
+            {
+                return true;
+            }
+            else
+            {
+                bool result = this.CanExecuteEvaluator.Invoke();
+                return result;
+            }
+        }
+
+        public void Execute(object parameter)
+        {
+            FunctionToExecute.Invoke(parameter);
+        }
+    }
 }
