@@ -27,6 +27,15 @@ namespace Extender
                 insertionString,
                 ext);
         }
+
+        public static string EscapeForHTML(this string text)
+        {
+            return text.Replace(@"&", @"&amp;")
+                       .Replace(@"""", @"&#34;")
+                       .Replace(@"<", @"&lt;")
+                       .Replace(@">", @"&gt;")
+                       .Replace(@"!", @"&#33;");
+        }
     }
 
     public static class DateTimes
