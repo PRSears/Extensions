@@ -58,7 +58,7 @@ namespace Extender.Drawing
         }
 
         /// <summary>
-        /// Constructs a new Offset representing between the translation between two points.
+        /// Constructs a new Offset representing the translation between two points.
         /// </summary>
         public Offset(Point a, Point b)
         {

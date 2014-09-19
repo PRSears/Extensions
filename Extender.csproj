@@ -47,6 +47,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Windows\Cross.cs" />
+    <Compile Include="Windows\XmlColor.cs" />
     <Compile Include="Databases\IStorable.cs" />
     <Compile Include="Date\DateRange.cs" />
     <Compile Include="Debugging\Debug.cs" />
