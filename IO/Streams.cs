@@ -16,5 +16,19 @@ namespace Extender.IO
                 return ms.ToArray();
             }
         }
+
+        [System.Obsolete]
+        public FileStream TryOpenRead(string pathToFile)
+        {
+            if (!File.Exists(pathToFile)) return null;
+
+            return new FileStream
+            (
+                pathToFile,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.ReadWrite
+            );
+        }
     }
 }

@@ -47,6 +47,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ObjectUtils\ReferenceEqualityComparer.cs" />
     <Compile Include="Windows\Cross.cs" />
     <Compile Include="Windows\XmlColor.cs" />
     <Compile Include="Databases\IStorable.cs" />

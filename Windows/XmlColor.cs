@@ -15,21 +15,21 @@ namespace Extender.Windows
     /// </remarks>
     public class XmlColor
     {
-        private Color color_ = Color.FromRgb(0, 0, 0);
+        private Color _color = Color.FromRgb(0, 0, 0);
 
         public XmlColor() { }
-        public XmlColor(Color c) { color_ = c; }
+        public XmlColor(Color c) { _color = c; }
         public XmlColor(string value) { this.Web = value; }
 
 
         public Color ToColor()
         {
-            return color_;
+            return _color;
         }
 
         public void FromColor(Color c)
         {
-            color_ = c;
+            _color = c;
         }
 
         public static implicit operator Color(XmlColor x)
@@ -48,23 +48,23 @@ namespace Extender.Windows
             get
             {
                 return string.Format
-                    (
-                        "#{0:X2}{1:X2}{2:X2}{3:X2}",
-                        color_.A,
-                        color_.R,
-                        color_.G,
-                        color_.B
-                    );
+                (
+                    "#{0:X2}{1:X2}{2:X2}{3:X2}",
+                    _color.A,
+                    _color.R,
+                    _color.G,
+                    _color.B
+                );
             }
             set
             {
                 try
                 {
-                    color_ = (Color)ColorConverter.ConvertFromString(value);
+                    _color = (Color)ColorConverter.ConvertFromString(value);
                 }
                 catch (Exception)
                 {
-                    color_ = Color.FromRgb(0, 0, 0);
+                    _color = Color.FromRgb(0, 0, 0);
                 }
             }
         }

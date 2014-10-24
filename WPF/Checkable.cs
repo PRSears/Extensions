@@ -45,6 +45,21 @@ namespace Extender.WPF
             IsChecked   = isChecked;
         }
 
+        public override string ToString()
+        {
+            return _Resource.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType().Equals(this.GetType()))
+            {
+                var b = (Checkable<T>)obj;
+                return (this.IsChecked == b.IsChecked) && (this.Resource.Equals(b.Resource));
+            }
+            else return false;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)

@@ -19,11 +19,12 @@ namespace Extender.WPF
         /// <returns>Returns True if the user clicked yes, false otherwise.</returns>
         public static bool Show(string title, string text)
         {
-            System.Windows.Forms.DialogResult r = System.Windows.Forms.MessageBox.Show(
-                    text,
-                    title,
-                    System.Windows.Forms.MessageBoxButtons.YesNo
-                    );
+            System.Windows.Forms.DialogResult r = System.Windows.Forms.MessageBox.Show
+            (
+                text,
+                title,
+                System.Windows.Forms.MessageBoxButtons.YesNo
+            );
 
             if (r == System.Windows.Forms.DialogResult.Yes)
                 return true;
