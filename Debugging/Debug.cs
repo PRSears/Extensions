@@ -1,8 +1,42 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Extender.Debugging
 {
-    public class Debug
+    /// <remarks>
+    /// From Brian Gideon on StackOverflow 
+    /// https://stackoverflow.com/questions/3670057/does-console-writeline-block
+    /// </remarks>
+    public static class NonBlockingConsole
+    {
+        private static BlockingCollection<string> W_Queue = new BlockingCollection<string>();
+
+        static NonBlockingConsole()
+        {
+            var thread = new Thread
+            (
+                () =>
+                {
+                    while (true) Console.WriteLine(W_Queue.Take());
+                }
+            );
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        /// <summary>
+        /// Uses a background thread to write to the console without blocking.
+        /// </summary>
+        /// <param name="value">Value to write to the console.</param>
+        public static void WriteLine(string value)
+        {
+            W_Queue.Add(value);
+        }
+    }
+
+    public static class Debug
     {
         /// <summary>
         /// Generates a string of debug text containing the current time and a 
@@ -28,7 +62,7 @@ namespace Extender.Debugging
         /// <param name="warnLevel">Optionally, specify what type of message this is.</param>
         public static void WriteMessage(string message, string warnLevel = "debug")
         {
-            Console.WriteLine(CreateDebugText(message, warnLevel));
+            NonBlockingConsole.WriteLine(CreateDebugText(message, warnLevel));
         }
 
 
@@ -60,12 +94,12 @@ namespace Extender.Debugging
 
         public static void WriteToConsole(this System.Drawing.Rectangle rect)
         {
-            Console.WriteLine(rect.ToDebugString());
+            NonBlockingConsole.WriteLine(rect.ToDebugString());
         }
 
         public static void WriteToConsole(this System.Drawing.Rectangle rect, string message)
         {
-            Console.Write(String.Format("{0} > {1}", message, rect.ToDebugString()));
+            NonBlockingConsole.WriteLine(String.Format("{0} > {1}", message, rect.ToDebugString()));
         }
     }
 }

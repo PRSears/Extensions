@@ -38,7 +38,7 @@ namespace Extender.Debugging
         public static string WriteExceptionText(Exception e, bool stacktrace)
         {
             string exTxt = CreateExceptionText(e, stacktrace);
-            Console.WriteLine(exTxt);
+            NonBlockingConsole.WriteLine(exTxt);
 
             return exTxt;
         }
@@ -57,7 +57,7 @@ namespace Extender.Debugging
             buffer.AppendLine(Debug.CreateDebugText(message, "exception"));
             buffer.AppendLine(CreateExceptionText(e, stacktrace));
 
-            Console.Write(buffer.ToString());
+            NonBlockingConsole.WriteLine(buffer.ToString());
             return buffer.ToString();
         }
     }
