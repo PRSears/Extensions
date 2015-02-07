@@ -36,6 +36,8 @@ namespace Extender.Debugging
         }
     }
 
+    // TODO Add support for multiple console output streams
+
     public static class Debug
     {
         /// <summary>

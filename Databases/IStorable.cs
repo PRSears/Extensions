@@ -7,5 +7,6 @@ namespace Extender.Databases
         Guid UniqueID { get; }
 
         byte[] GetHashData();
+        void ForceNewUniqueID();
     }
 }
