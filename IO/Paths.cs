@@ -35,5 +35,10 @@ namespace Extender.IO
 
             return relativePath;
         }
+
+        public static bool IsLocalPath(string path)
+        {
+            return new Uri(path).IsFile;
+        }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Extender.WPF
 {
     /// <summary>
@@ -39,9 +34,11 @@ namespace Extender.WPF
         /// <returns>Returns True if the user clicked yes, false otherwise.</returns>
         public static bool Show()
         {
-            return ConfirmationDialog.Show(
+            return ConfirmationDialog.Show
+            (
                 "Confirm",
-                "Are you sure?\nAny unsaved changes will be lost.");
+                "Are you sure?\nAny unsaved changes will be lost."
+            );
         }
     }
 }

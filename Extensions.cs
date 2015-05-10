@@ -31,7 +31,8 @@ namespace Extender
                        .Replace(@"""", @"&#34;")
                        .Replace(@"<", @"&lt;")
                        .Replace(@">", @"&gt;")
-                       .Replace(@"!", @"&#33;");
+                       .Replace(@"!", @"&#33;")
+                       .Replace(@"©", @"&#169;");
         }
 
         /// <summary>
@@ -238,6 +239,14 @@ namespace Extender
 
     public static class Bitmaps
     {
+        /// <summary>
+        /// Returns the length of the longest edge of this image, in pixels.
+        /// </summary>
+        public static int LongEdge(this Bitmap image)
+        {
+            return (image.Width > image.Height) ? image.Width : image.Height;
+        }
+
         /// <summary>
         /// Creates a copy of this Bitmap and resizes it.
         /// Does not presevce aspect ratio, or performs any translations.

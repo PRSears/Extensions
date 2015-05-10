@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\Paths.cs" />
+    <Compile Include="ObjectUtils\BitmapCompare.cs" />
     <Compile Include="ObjectUtils\ReferenceEqualityComparer.cs" />
     <Compile Include="Windows\Cross.cs" />
     <Compile Include="Windows\XmlColor.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="IO\Streams.cs" />
     <Compile Include="ObjectUtils\Hashing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WPF\BusySplash.cs" />
     <Compile Include="WPF\Checkable.cs" />
     <Compile Include="WPF\CompletedMessagebox.cs" />
     <Compile Include="WPF\ConfirmationDialog.cs" />

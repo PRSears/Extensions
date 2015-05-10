@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Extender.WPF
@@ -74,8 +72,10 @@ namespace Extender.WPF
 
             if(WindowIsOpen(viewType) && !allowMultiples)
             {
-                var existing = Children.FirstOrDefault(
-                                        w => w.GetType().Equals(viewType));
+                var existing = Children.FirstOrDefault
+                (
+                    w => w.GetType().Equals(viewType)
+                );
 
                 if (existing != null)
                 {
