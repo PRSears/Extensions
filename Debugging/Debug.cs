@@ -48,12 +48,12 @@ namespace Extender.Debugging
         public static string CreateDebugText(string message, string warnLevel = "debug")
         {
             return string.Format
-                (
-                    " [{0} @ {1}] {2}",
-                    warnLevel.ToUpper(),
-                    DateTime.Now.ToString(),
-                    message
-                );
+            (
+                " [{0} @ {1}] {2}",
+                warnLevel.ToUpper(),
+                DateTime.Now.ToString(),
+                message
+            );
         }
 
         /// <summary>
@@ -87,11 +87,11 @@ namespace Extender.Debugging
         public static string ToDebugString(this System.Drawing.Rectangle r)
         {
             return String.Format
-                (
-                    "({0}, {1}) [Width {2}, Height {3}]",
-                    r.X, r.Y,
-                    r.Width, r.Height
-                );
+            (
+                "({0}, {1}) [Width {2}, Height {3}]",
+                r.X, r.Y,
+                r.Width, r.Height
+            );
         }
 
         public static void WriteToConsole(this System.Drawing.Rectangle rect)

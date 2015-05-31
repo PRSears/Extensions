@@ -6,13 +6,11 @@ namespace Extender.WPF
 {
     public abstract class ViewModel : INotifyPropertyChanged
     {
-        public ICommand CloseCommand { get; set; }
-        //public Action CloseAction   { get; set; }
-        public bool ConfirmClose    { get; set; }
+        public ICommand CloseCommand    { get; set; }
+        public bool ConfirmClose        { get; set; }
 
         public virtual void Initialize()
         {
-            //CloseCommand = new Extender.WPF.RelayCommand(CloseAction);
             ConfirmClose = false;
         }
 

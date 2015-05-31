@@ -19,10 +19,13 @@ namespace Extender
 
         public static string InsertBeforeExtension(this string path, string insertionString)
         {
-            return string.Format("{0}{1}{2}",
+            return string.Format
+            (
+                "{0}{1}{2}",
                 Path.GetFileNameWithoutExtension(path),
                 insertionString,
-                Path.GetExtension(path));
+                Path.GetExtension(path)
+            );
         }
 
         public static string EscapeForHTML(this string text)
@@ -471,10 +474,10 @@ namespace Extender
                 double multiplier = ((double)targetLength / (double)imageSize.Width);
 
                 return new Size
-                    (
-                        (int)Math.Round(targetLength),
-                        (int)Math.Round(imageSize.Height * multiplier)
-                    );
+                (
+                    (int)Math.Round(targetLength),
+                    (int)Math.Round(imageSize.Height * multiplier)
+                );
             }
             else
             {
@@ -482,10 +485,10 @@ namespace Extender
                 double multiplier = ((double)targetLength / (double)imageSize.Height);
 
                 return new Size
-                    (
-                        (int)Math.Round(imageSize.Width * multiplier),
-                        (int)Math.Round(targetLength)
-                    );
+                (
+                    (int)Math.Round(imageSize.Width * multiplier),
+                    (int)Math.Round(targetLength)
+                );
             }
         }
     }
@@ -564,7 +567,7 @@ namespace Extender
         }
     }
 
-    // Objects, Arrays, and ArrayTraverse classes are courtesy of Alexey Burtsev from StackOverflow
+    // Most of Objects, Arrays, and ArrayTraverse classes are from of Alexey Burtsev from StackOverflow
     // https://raw.githubusercontent.com/Burtsev-Alexey/net-object-deep-copy/master/ObjectExtensions.cs
 
     public static class Objects
@@ -629,6 +632,115 @@ namespace Extender
         public static T Copy<T>(this T original)
         {
             return (T)Copy((Object)original);
+        }
+
+        /// <summary>
+        /// Performs type comparison to check if this object is a type of number.
+        /// </summary>
+        /// <param name="value">Object being checked.</param>
+        /// <returns>True if this object is a type of number.</returns>
+        public static bool IsNumber(this object value)
+        {
+            return  value is int    ||
+                    value is double ||
+                    value is float  ||
+                    value is sbyte  ||
+                    value is byte   ||
+                    value is short  ||
+                    value is ushort ||
+                    value is uint   ||
+                    value is long   ||
+                    value is ulong  ||
+                    value is decimal;
+        }
+
+        /// <summary>
+        /// Updates the values of all public properties of this object with the corresponding properties' values 
+        /// from sourceObj. 
+        /// </summary>
+        /// <typeparam name="T">Class type of the source and destination object.</typeparam>
+        /// <param name="destObj">Object whose properies are to be updated.</param>
+        /// <param name="sourceObj">Object to take properties' values from.</param>
+        public static void UpdateFrom<T>(this T destObj, T sourceObj)
+            where T : class
+        {
+            UpdateFrom<T>
+            (
+                destObj, 
+                sourceObj,
+                BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty
+            );
+        }
+
+        /// <summary>
+        /// Updates the values of all matched properties of this object with the corresponding properties' values
+        /// from sourceObj.
+        /// </summary>
+        /// <typeparam name="T">Class type of the source and destination object.</typeparam>
+        /// <param name="destObj">Object whose properies are to be updated.</param>
+        /// <param name="sourceObj">Object to take properties' values from.</param>
+        /// <param name="bindingAttr">A bitmask comprising of one of more BindingFlags that 
+        /// specify how the search is to be conducted.</param>
+        public static void UpdateFrom<T>(this T destObj, T sourceObj, BindingFlags bindingAttr)
+        {
+            PropertyInfo[] srcFields = sourceObj.GetType()
+                                                .GetProperties(bindingAttr);
+
+            PropertyInfo[] dstFields = destObj.GetType()
+                                              .GetProperties(bindingAttr);
+
+            foreach (var srcProperty in srcFields)
+            {
+                var dstProperty = dstFields.FirstOrDefault(p => p.Name == srcProperty.Name);
+                if (dstProperty != null && dstProperty.CanWrite)
+                {
+                    dstProperty.SetValue
+                    (
+                        destObj,
+                        srcProperty.GetValue(sourceObj, null),
+                        null
+                    );
+                }
+            }
+
+        }
+    }
+
+    public static class Maths
+    {
+        public static bool RoughEquals(this double a, double b, double sigma)
+        {
+            return Math.Abs(a - b) < sigma;
+        }
+
+        public static bool RoughEquals(this int a, double b, double sigma)
+        {
+            return Math.Abs(a - b) < sigma;
+        }
+
+        public static bool RoughEquals(this double a, int b, double sigma)
+        {
+            return Maths.RoughEquals(b, a, sigma);
+        }
+
+        public static bool RoughEquals(this long a, double b, double sigma)
+        {
+            return Math.Abs(a - b) < sigma;
+        }
+
+        public static bool RoughEquals(this double a, long b, double sigma)
+        {
+            return Maths.RoughEquals(b, a, sigma);
+        }
+
+        public static bool RoughEquals(this float a, double b, double sigma)
+        {
+            return Math.Abs(a - b) < sigma;
+        }
+
+        public static bool RoughEquals(this double a, float b, double sigma)
+        {
+            return Maths.RoughEquals(b, a, sigma);
         }
     }
 

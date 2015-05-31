@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\Paths.cs" />
+    <Compile Include="IO\SerializedArray.cs" />
     <Compile Include="ObjectUtils\BitmapCompare.cs" />
     <Compile Include="ObjectUtils\ReferenceEqualityComparer.cs" />
     <Compile Include="Windows\Cross.cs" />
