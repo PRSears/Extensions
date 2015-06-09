@@ -11,7 +11,7 @@ namespace Extender.IO
     /// <typeparam name="T">The type of elements in the list.</typeparam>
     public abstract class SerializedArray<T> : INotifyPropertyChanged
     {
-        public    T[]       SourceList
+        public T[] SourceList
         {
             get
             {
@@ -23,8 +23,8 @@ namespace Extender.IO
                 OnPropertyChanged("SourceList");
             }
         }
-        private   T[]      _SourceList;
-        protected string    FilePath;
+        private T[] _SourceList;
+        protected string FilePath;
 
         /// <summary>
         /// Expands the SourceList and adds 'item' to the last index.
@@ -101,7 +101,7 @@ namespace Extender.IO
             }
 
             // TODO Test if OnPropertyChanged gets triggered by the UpdateFrom's copies
-            //OnPropertyChanged("SourceList");
+            //OnPropertyChanged("SourceList"); -- I suspect it does
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Extender.IO
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
 

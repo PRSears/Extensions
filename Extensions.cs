@@ -682,6 +682,7 @@ namespace Extender
         /// <param name="bindingAttr">A bitmask comprising of one of more BindingFlags that 
         /// specify how the search is to be conducted.</param>
         public static void UpdateFrom<T>(this T destObj, T sourceObj, BindingFlags bindingAttr)
+            where T : class
         {
             PropertyInfo[] srcFields = sourceObj.GetType()
                                                 .GetProperties(bindingAttr);
