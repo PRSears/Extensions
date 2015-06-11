@@ -567,7 +567,8 @@ namespace Extender
         }
     }
 
-    // Most of Objects, Arrays, and ArrayTraverse classes are from of Alexey Burtsev from StackOverflow
+    // Methods to do with deep copies in Objects, Arrays, and ArrayTraverse are
+    // courtesy of Alexey Burtsev from StackOverflow:
     // https://raw.githubusercontent.com/Burtsev-Alexey/net-object-deep-copy/master/ObjectExtensions.cs
 
     public static class Objects
@@ -652,6 +653,26 @@ namespace Extender
                     value is long   ||
                     value is ulong  ||
                     value is decimal;
+        }
+
+        /// <summary>
+        /// Performs type comparison to check if this Type is a type of number.
+        /// </summary>
+        /// <param name="value">Type being checked.</param>
+        /// <returns>True if this Type is a type of number.</returns>
+        public static bool IsNumber(this Type value)
+        {
+            return  value.Equals(typeof(int))       ||
+                    value.Equals(typeof(double))    ||
+                    value.Equals(typeof(float))     ||
+                    value.Equals(typeof(sbyte))     ||
+                    value.Equals(typeof(byte))      ||
+                    value.Equals(typeof(short))     ||
+                    value.Equals(typeof(ushort))    ||
+                    value.Equals(typeof(uint))      ||
+                    value.Equals(typeof(long))      ||
+                    value.Equals(typeof(ulong))     ||
+                    value.Equals(typeof(decimal));
         }
 
         /// <summary>
@@ -805,3 +826,5 @@ namespace Extender
         }
     }
 }
+
+// TODO Split this up into multiple files like I should have done from the beginning
