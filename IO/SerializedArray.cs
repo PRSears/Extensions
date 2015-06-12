@@ -24,7 +24,13 @@ namespace Extender.IO
             }
         }
         private T[] _SourceList;
-        protected string FilePath;
+
+        public abstract string FilePath { get; }
+
+        public SerializedArray()
+        {
+            Directory.CreateDirectory(Directory.GetParent(FilePath).FullName);
+        }
 
         /// <summary>
         /// Expands the SourceList and adds 'item' to the last index.
@@ -35,12 +41,20 @@ namespace Extender.IO
         {
             Reload();
 
-            T[] appendedList = new T[SourceList.Length + 1];
+            if (SourceList == null || SourceList.Length < 1)
+            {
+                SourceList = new T[] { item };
+            }
+            else
+            {
+                T[] appendedList = new T[SourceList.Length + 1];
 
-            Array.Copy(SourceList, appendedList, SourceList.Length);
-            appendedList[SourceList.Length] = item;
+                Array.Copy(SourceList, appendedList, SourceList.Length);
+                appendedList[SourceList.Length] = item;
 
-            SourceList = appendedList;
+                SourceList = appendedList;
+            }
+
             Save();
         }
 
@@ -52,6 +66,9 @@ namespace Extender.IO
         /// <returns>True if there was a matching item in SourceList.</returns>
         public virtual bool Remove(T item)
         {
+            if (SourceList == null || SourceList.Length < 1)
+                throw new NullReferenceException("SourceList has not been initialized.");
+
             T[] ammendedList = new T[SourceList.Length - 1];
 
             try
@@ -90,7 +107,7 @@ namespace Extender.IO
             if (!File.Exists(FilePath))
                 return;
 
-            using(FileStream stream = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
+            using(FileStream stream = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 XmlSerializer xml = new XmlSerializer(this.GetType());
 
@@ -109,7 +126,7 @@ namespace Extender.IO
         /// </summary>
         public virtual void Save()
         {
-            using(FileStream stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write))
+            using(FileStream stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
                 XmlSerializer xml = new XmlSerializer(this.GetType());
 
@@ -169,7 +186,7 @@ namespace Extender.IO
 
         protected void Save()
         {
-            using(FileStream stream = new FileStream(this.File.FullName, FileMode.Create, FileAccess.Write))
+            using(FileStream stream = new FileStream(this.File.FullName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
                 XmlSerializer xml = new XmlSerializer(this.Obj.GetType());
                 xml.Serialize(stream, this.Obj);
@@ -181,7 +198,7 @@ namespace Extender.IO
             if (!this.File.Exists)
                 return;
 
-            using(FileStream stream = new FileStream(this.File.FullName, FileMode.Open, FileAccess.Read))
+            using(FileStream stream = new FileStream(this.File.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 XmlSerializer xml = new XmlSerializer(this.Obj.GetType());
 
