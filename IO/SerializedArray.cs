@@ -39,7 +39,7 @@ namespace Extender.IO
         /// <param name="item">new item to add to the SourceList.</param>
         public virtual void Add(T item)
         {
-            Reload();
+            BlockingReload();
 
             if (SourceList == null || SourceList.Length < 1)
             {
@@ -55,7 +55,7 @@ namespace Extender.IO
                 SourceList = appendedList;
             }
 
-            Save();
+            BlockingSave();
         }
 
         /// <summary>
@@ -67,7 +67,14 @@ namespace Extender.IO
         public virtual bool Remove(T item)
         {
             if (SourceList == null || SourceList.Length < 1)
-                throw new NullReferenceException("SourceList has not been initialized.");
+            {
+                Debugging.Debug.WriteMessage
+                (
+                    "SourceList has not been initialized.",
+                    "warn"
+                );
+                return false;
+            }
 
             T[] ammendedList = new T[SourceList.Length - 1];
 
@@ -84,7 +91,7 @@ namespace Extender.IO
                 }
 
                 SourceList = ammendedList;
-                Save();
+                BlockingSave();
 
                 return true;
             }
@@ -99,15 +106,12 @@ namespace Extender.IO
             }
         }
 
-        /// <summary>
-        /// Replaces (overwrites) this class' public members with current values taken from the XML file.
-        /// </summary>
-        public virtual void Reload()
+        private void BlockingReload()
         {
             if (!File.Exists(FilePath))
                 return;
 
-            using(FileStream stream = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream stream = new FileStream(FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 XmlSerializer xml = new XmlSerializer(this.GetType());
 
@@ -121,17 +125,30 @@ namespace Extender.IO
             //OnPropertyChanged("SourceList"); -- I suspect it does
         }
 
-        /// <summary>
-        /// Serializes this object and saves (overwrites) to the XML file.
-        /// </summary>
-        public virtual void Save()
+        private void BlockingSave()
         {
-            using(FileStream stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            using (FileStream stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
                 XmlSerializer xml = new XmlSerializer(this.GetType());
 
                 xml.Serialize(stream, this);
             }
+        }
+
+        /// <summary>
+        /// Replaces (overwrites) this class' public members with current values taken from the XML file.
+        /// </summary>
+        public virtual void Reload()
+        {
+            BlockingReload();
+        }
+
+        /// <summary>
+        /// Serializes this object and saves (overwrites) to the XML file.
+        /// </summary>
+        public virtual void Save()
+        {
+            BlockingSave();
         }
 
         /// <summary>
