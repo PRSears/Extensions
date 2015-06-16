@@ -59,6 +59,32 @@ namespace Extender.IO
         }
 
         /// <summary>
+        /// Expands the SourceList and adds 'items' at the end.
+        /// Saves changes to the XML file.
+        /// </summary>
+        /// <param name="items">Array of items to append to SourceList.</param>
+        public virtual void Add(T[] items)
+        {
+            BlockingReload();
+
+            if(SourceList == null || SourceList.Length < 1)
+            {
+                SourceList = items;
+            }
+            else
+            {
+                T[] appendedList = new T[SourceList.Length + items.Length];
+
+                Array.Copy(SourceList, appendedList, SourceList.Length);
+                Array.Copy(items, 0, appendedList, SourceList.Length, items.Length);
+
+                SourceList = appendedList;
+            }
+
+            BlockingSave();
+        }
+
+        /// <summary>
         /// Searches SourceList for element matching 'item', removes it from the array if found.
         /// The size of the array is automatically adjusted if necessary.
         /// </summary>
