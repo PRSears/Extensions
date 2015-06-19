@@ -533,6 +533,14 @@ namespace Extender
                 action();
             }
         }
+
+        public static void ForEach<T>(this IEnumerable<T> enumerator, Action<T> action)
+        {
+            foreach(var item in enumerator)
+            {
+                action(item);
+            }
+        }
     }
 
     public static class ObservableCollections

@@ -111,7 +111,7 @@ namespace Extender.WPF
         /// </summary>
         public bool ChildOpen()
         {
-            return (Children.Count > 0);
+            return (Children?.Count > 0);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Extender.WPF
         {
             try
             {
-                Children.First(w => w.Equals(childWindow)).Close();
+                Children?.First(w => w.Equals(childWindow)).Close();
                 return true;
             }
             catch
@@ -145,7 +145,7 @@ namespace Extender.WPF
         /// <returns>True if an element was successfully removed from the provided index.</returns>
         public bool CloseChildAtIndex(int index)
         {
-            if (this.Children.Count < index) return false;
+            if (this.Children?.Count < index) return false;
 
             return CloseChild(this.Children[index]);
         }
@@ -156,7 +156,7 @@ namespace Extender.WPF
         /// <returns>The number of child Windows successfully closed</returns>
         public int CloseChildren(Func<Window, bool> predicate)
         {
-            var matches = Children.Where(predicate).ToArray();
+            var matches = Children?.Where(predicate).ToArray();
 
             int closed = 0;
             foreach(var match in matches)
