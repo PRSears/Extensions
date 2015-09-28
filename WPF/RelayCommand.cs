@@ -15,7 +15,7 @@ namespace Extender.WPF
         }
 
         /// <param name="methodToExecute">Action to execute if the canExecuteEvaluator returns true after the command is called.</param>
-        /// <param name="canExecuteEvaluator">Evaluator funciton to decide if the command can execute.</param>
+        /// <param name="canExecuteEvaluator">Evaluator function to decide if the command can execute.</param>
         public RelayCommand(Action methodToExecute, Func<bool> canExecuteEvaluator)
         {
             this.methodToExecute        = methodToExecute;

@@ -65,11 +65,10 @@ namespace Extender.IO
             PropertyInfo[] properties = SerializeType.GetProperties(_BindingFlags);
 
             return properties.Where
-                              (
-                                p => p.GetCustomAttributes(false)
-                                      .Count(a => a is System.Xml.Serialization.XmlIgnoreAttribute) < 1
-                              )
-                             .ToArray();
+            (
+                p => p.GetCustomAttributes(false)
+                      .Count(a => a is System.Xml.Serialization.XmlIgnoreAttribute) < 1
+            ).ToArray();
         }
         
         protected string[] GetPublicPropertyNames()

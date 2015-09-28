@@ -47,11 +47,28 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\TypeArgumentException.cs" />
     <Compile Include="IO\CsvSerializer.cs" />
     <Compile Include="IO\Paths.cs" />
     <Compile Include="IO\SerializedArray.cs" />
     <Compile Include="ObjectUtils\BitmapCompare.cs" />
     <Compile Include="ObjectUtils\ReferenceEqualityComparer.cs" />
+    <Compile Include="UnitConversion\Length.cs" />
+    <Compile Include="UnitConversion\Lengths\Centimeter.cs" />
+    <Compile Include="UnitConversion\Lengths\Foot.cs" />
+    <Compile Include="UnitConversion\Lengths\Inch.cs" />
+    <Compile Include="UnitConversion\Lengths\Kilometer.cs" />
+    <Compile Include="UnitConversion\Lengths\Meter.cs" />
+    <Compile Include="UnitConversion\Lengths\Micron.cs" />
+    <Compile Include="UnitConversion\Lengths\Mile.cs" />
+    <Compile Include="UnitConversion\Lengths\Millimeter.cs" />
+    <Compile Include="UnitConversion\Lengths\Thou.cs" />
+    <Compile Include="UnitConversion\Lengths\Yard.cs" />
+    <Compile Include="UnitConversion\Measure.cs" />
+    <Compile Include="UnitConversion\Temperature.cs" />
+    <Compile Include="UnitConversion\Temperatures\Celsius.cs" />
+    <Compile Include="UnitConversion\Temperatures\Fehrenheit.cs" />
+    <Compile Include="UnitConversion\Temperatures\Kelvin.cs" />
     <Compile Include="Windows\Cross.cs" />
     <Compile Include="Windows\XmlColor.cs" />
     <Compile Include="Databases\IStorable.cs" />
@@ -71,9 +88,7 @@
     <Compile Include="WPF\RelayCommand.cs" />
     <Compile Include="WPF\WindowManager.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

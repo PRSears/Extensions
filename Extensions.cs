@@ -734,6 +734,16 @@ namespace Extender
             }
 
         }
+
+        /// <summary>
+        /// Checks to see if this object is not in the inheritance tree of type param T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static bool IsNotA<T>(this object obj)
+        {
+            return !(obj is T);
+        }
     }
 
     public static class Maths
@@ -771,6 +781,40 @@ namespace Extender
         public static bool RoughEquals(this double a, float b, double sigma)
         {
             return Maths.RoughEquals(b, a, sigma);
+        }
+    }
+
+    public static class BitConverterEx
+    {
+        /// <summary>
+        /// Converts a decimal value to an array of bytes.
+        /// </summary>
+        public static byte[] GetBytes(decimal value)
+        {
+            int[] bits = decimal.GetBits(value);
+
+            List<byte> bytes = new List<byte>();
+
+            foreach(int i in bits)
+            {
+                bytes.AddRange(BitConverter.GetBytes(i));
+            }
+
+            return bytes.ToArray();
+        }
+
+        public static decimal ToDecimal(byte[] bytes)
+        {
+            if (bytes.Count() != 16)
+                throw new Exception("A decimal must be created from exactly 16 bytes");
+
+            int[] bits = new Int32[4];
+            for (int i = 0; i <= 15; i += 4)
+            {
+                bits[i / 4] = BitConverter.ToInt32(bytes, i);
+            }
+
+            return new decimal(bits);
         }
     }
 
@@ -835,4 +879,4 @@ namespace Extender
     }
 }
 
-// TODO Split this up into multiple files like I should have done from the beginning
+// TODO Split this up into multiple files like I should have done from the fucking beginning.
