@@ -9,8 +9,6 @@ namespace Extender.ObjectUtils
     {
         /// <summary>
         /// Computes a hash value from a list of byte arrays (blocks) by transforming the blocks with MD5.
-        /// 
-        /// You should probably use Hashing.GenerateSHA256 instead, unless collisions / security really aren't an issue. 
         /// </summary>
         public static byte[] GenerateHashCode(List<byte[]> blocks)
         {
@@ -28,8 +26,6 @@ namespace Extender.ObjectUtils
 
         /// <summary>
         /// Computes a hash value from an array of byte arrays (blocks) by transforming the blocks with MD5.
-        /// 
-        /// You should probably use Hashing.GenerateSHA256 instead, unless collisions / security really aren't an issue. 
         /// </summary>
         public static byte[] GenerateHashCode(byte[][] blocks)
         {
@@ -65,7 +61,7 @@ namespace Extender.ObjectUtils
 
             hashFunction.TransformFinalBlock(blocks[blocks.Length - 1], 0, blocks[blocks.Length - 1].Length);
 
-            return hashFunction.Hash;
+            return hashFunction.Hash; //TODOh This function may not be working correctly. CHECK UP ON IT
         }
 
         /// <summary>

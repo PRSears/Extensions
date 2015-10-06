@@ -16,8 +16,8 @@
                 (
                     "Yard",
                     "yd",
-                    (yards) => { return yards * 0.9144m; },
-                    (meters) => { return meters / 0.9144m; }
+                    (yards) => yards * 0.9144m,
+                    (meters) => meters / 0.9144m
                 );
             }
         }

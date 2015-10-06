@@ -44,8 +44,8 @@ namespace Extender.WPF
         private void OnWindowOpened(Window window)
         {
             WindowOpenedEventHandler handler = WindowOpened;
-            if (handler != null)
-                handler(this, window);
+
+            handler?.Invoke(this, window);
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace Extender.WPF
         private void OnWindowClosed(Type windowType)
         {
             WindowClosedEventHandler handler = WindowClosed;
-            if (handler != null)
-                handler(this, windowType);
+
+            handler?.Invoke(this, windowType);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Extender.WPF
             {
                 var existing = Children.FirstOrDefault
                 (
-                    w => w.GetType().Equals(viewType)
+                    w => w.GetType() == viewType
                 );
 
                 if (existing != null)
@@ -102,7 +102,7 @@ namespace Extender.WPF
         /// </returns>
         public bool WindowIsOpen(Type typeOfWindow)
         {
-            return (Children.Where(w => w.GetType().Equals(typeOfWindow)).Count() > 0);
+            return Children?.Any(w => w.GetType() == typeOfWindow) ?? false;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Extender.WPF
         /// </summary>
         public bool ChildOpen()
         {
-            return (Children?.Count > 0);
+            return Children?.Count > 0;
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Extender.WPF
         {
             if (this.Children?.Count < index) return false;
 
-            return CloseChild(this.Children[index]);
+            return CloseChild(this.Children?[index]);
         }
 
         /// <summary>
@@ -159,11 +159,9 @@ namespace Extender.WPF
             var matches = Children?.Where(predicate).ToArray();
 
             int closed = 0;
-            foreach(var match in matches)
-            {
-                if (CloseChild(match))
-                    closed++;
-            }
+
+            if (matches != null)
+                closed += matches.Count(match => CloseChild(match));
 
             return closed; // number of children closed
         }
@@ -174,11 +172,12 @@ namespace Extender.WPF
         /// </summary>
         public void CloseAll()
         {
+            if (Children == null) return;
+
             int attempts = 0;
             while (Children.Count > 0 && attempts < 1000)
             {
-                if (Children[0] != null)
-                    Children[0].Close();
+                Children[0]?.Close();
                 attempts++;
             }
 
@@ -192,7 +191,7 @@ namespace Extender.WPF
 
             Type windowType = sender.GetType();
 
-            int childIndex = Children.IndexOf((sender as Window));
+            int childIndex = Children.IndexOf((Window)sender);
 
             // Properly dispose of the closed window and remove it 
             // from the list of Children being managed.
