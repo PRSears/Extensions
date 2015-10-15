@@ -16,8 +16,8 @@
                 (
                     "Celsius",
                     "\u00B0C",
-                    (celsius) => { return celsius + 273.15m; },
-                    (kelvin) => { return kelvin - 273.15m; }
+                    celsius => celsius + 273.15d,
+                    kelvin  => kelvin - 273.15d
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Celsius(decimal value)
+        public Celsius(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Celsius(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Celsius(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Celsius(Temperature value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

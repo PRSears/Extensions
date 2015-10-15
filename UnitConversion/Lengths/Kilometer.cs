@@ -16,8 +16,8 @@
                 (
                     "kilometer",
                     "km",
-                    (kilometers) => { return kilometers * 1000m; },
-                    (meters) => { return meters / 1000m; }
+                    kilometers => { return kilometers * 1000d; },
+                    meters => { return meters / 1000d; }
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Kilometer(decimal value)
+        public Kilometer(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Kilometer(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Kilometer(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Kilometer(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

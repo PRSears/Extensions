@@ -16,9 +16,8 @@
                 (
                     "Fahrenheit",
                     "\u00B0F",
-                    (fahrenheit) => { return ((fahrenheit + 459.67m) * (5m/9m)); },
-                    (kelvin) => { return ((kelvin * (9m/5m)) - 459.67m); }
-                );
+                    fahrenheit => ((fahrenheit + 459.67d) * (5d/9d)),
+                    kelvin     => ((kelvin * (9d/5d)) - 459.67d));
             }
         }
 
@@ -34,7 +33,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Fahrenheit(decimal value)
+        public Fahrenheit(double value)
         {
             Value = value;
         }
@@ -43,18 +42,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Fahrenheit(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Fahrenheit(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +53,7 @@
         /// <param name="value"></param>
         public Fahrenheit(Temperature value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

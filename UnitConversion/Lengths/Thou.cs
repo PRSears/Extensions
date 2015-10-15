@@ -16,8 +16,8 @@
                 (
                     "Thou",
                     "thou",
-                    (thous) => { return thous * 0.0000254m; },
-                    (meters) => { return meters / 0.0000254m; }
+                    thous => { return thous * 0.0000254d; },
+                    meters => { return meters / 0.0000254d; }
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Thou(decimal value)
+        public Thou(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Thou(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Thou(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Thou(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

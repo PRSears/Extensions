@@ -16,8 +16,8 @@
                 (
                     "foot",
                     "ft",
-                    (feet) => { return feet * 0.3048m; },
-                    (meters) => { return meters / 0.3048m ; }
+                    feet => { return feet * 0.3048d; },
+                    meters => { return meters / 0.3048d ; }
                 );
             }
         }
@@ -33,7 +33,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Foot(decimal value)
+        public Foot(double value)
         {
             Value = value;
         }
@@ -42,18 +42,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Foot(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Foot(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -62,7 +53,7 @@
         /// <param name="value"></param>
         public Foot(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

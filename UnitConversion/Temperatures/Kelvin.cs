@@ -16,8 +16,8 @@
                 (
                     "Kelvin",
                     "K",
-                    (k) => { return k; },
-                    (k) => { return k; }
+                    k => k,
+                    k => k
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Kelvin(decimal value)
+        public Kelvin(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Kelvin(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Kelvin(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Kelvin(Temperature value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

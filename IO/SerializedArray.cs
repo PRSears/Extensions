@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Extender.IO
@@ -107,13 +109,10 @@ namespace Extender.IO
             try
             {
                 int p = 0;
-                for(int i = 0; i < SourceList.Length; i++)
+                foreach (T t in SourceList.Where(t => !t.Equals(item)))
                 {
-                    if (!SourceList[i].Equals(item))
-                    {
-                        ammendedList[p] = SourceList[i];
-                        p++;
-                    }
+                    ammendedList[p] = t;
+                    p++;
                 }
 
                 SourceList = ammendedList;
@@ -125,7 +124,7 @@ namespace Extender.IO
             {
                 Extender.Debugging.Debug.WriteMessage
                 (
-                    string.Format("item ({0}) could not be removed from SourceList because it did not exist.", item.ToString()),
+                    $"item ({item.ToString()}) could not be removed from SourceList because it did not exist.",
                     "warn"
                 );
                 return false; // 'item' was never found
@@ -156,13 +155,14 @@ namespace Extender.IO
             using (FileStream stream = new FileStream(FilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
             {
                 XmlSerializer xml = new XmlSerializer(this.GetType());
-
+                
                 xml.Serialize(stream, this);
             }
         }
 
         /// <summary>
         /// Replaces (overwrites) this class' public members with current values taken from the XML file.
+        /// This method is blocking and doesn't account for simultaneous reads and writes. 
         /// </summary>
         public virtual void Reload()
         {
@@ -171,6 +171,7 @@ namespace Extender.IO
 
         /// <summary>
         /// Serializes this object and saves (overwrites) to the XML file.
+        /// This method is blocking and doesn't account for simultaneous reads and writes.  
         /// </summary>
         public virtual void Save()
         {
@@ -186,6 +187,23 @@ namespace Extender.IO
             OnPropertyChanged("SourceList");
         }
 
+        /// <summary>
+        /// Asynchronously reloads the source list. 
+        /// </summary>
+        /// <remarks>
+        /// A BlockingCollection of SerializeTasks in a static class with a static constructor is recommended 
+        /// to reduce IOExceptions from concurrent reads/writes.
+        /// </remarks>
+        public abstract Task ReloadAsync();
+        /// <summary>
+        /// Asynchronously saves the source list.
+        /// </summary>
+        /// <remarks> 
+        /// A BlockingCollection of SerializeTasks in a static class with a static constructor is recommended 
+        /// to reduce IOExceptions from concurrent reads/writes.
+        /// </remarks>
+        public abstract Task SaveAsync();
+
 
         #region INotifyPropertyChanged Members
 
@@ -195,57 +213,75 @@ namespace Extender.IO
         {
             PropertyChangedEventHandler handler = PropertyChanged;
 
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public enum SerializeOperations { Save, Load }
 
-    public class SerializeTask<T>
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public sealed class SerializeTask<T>
     {
-        protected SerializeOperations Operation;
-        protected SerializedArray<T> Obj;
-        protected FileInfo File;
+        private readonly SerializeOperations _Operation;
+        private readonly SerializedArray<T>  _Obj;
+        private readonly FileInfo            _File;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="obj"></param>
+        /// <param name="operation"></param>
         public SerializeTask(FileInfo file, SerializedArray<T> obj, SerializeOperations operation)
         {
-            this.Operation  = operation;
-            this.File       = file;
-            this.Obj        = obj;
+            this._Operation = operation;
+            this._File = file;
+            this._Obj = obj;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Execute()
         {
-            if (this.Operation == SerializeOperations.Save)
-                Save();
-            else if (this.Operation == SerializeOperations.Load)
-                Load();
-        }
-
-        protected void Save()
-        {
-            using(FileStream stream = new FileStream(this.File.FullName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            switch (this._Operation)
             {
-                XmlSerializer xml = new XmlSerializer(this.Obj.GetType());
-                xml.Serialize(stream, this.Obj);
+                case SerializeOperations.Save:
+                    Save();
+                    break;
+                case SerializeOperations.Load:
+                    Load();
+                    break;
             }
         }
 
-        protected void Load()
+        private void Save()
         {
-            if (!this.File.Exists)
+            using (FileStream stream = new FileStream(this._File.FullName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+            {
+                XmlSerializer xml = new XmlSerializer(this._Obj.GetType());
+                xml.Serialize(stream, this._Obj);
+            }
+        }
+
+        private void Load()
+        {
+            if (!this._File.Exists)
                 return;
 
-            using(FileStream stream = new FileStream(this.File.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream stream = new FileStream(this._File.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                XmlSerializer xml = new XmlSerializer(this.Obj.GetType());
+                XmlSerializer xml = new XmlSerializer(this._Obj.GetType());
 
-                this.Obj.UpdateFrom<SerializedArray<T>>
+                this._Obj.UpdateFrom<SerializedArray<T>>
                 (
                     (SerializedArray<T>)xml.Deserialize(stream)
                 );

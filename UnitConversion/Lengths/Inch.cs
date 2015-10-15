@@ -16,8 +16,8 @@
                 (
                     "inch",
                     "in",
-                    (inches) => { return inches * 0.0254m; },
-                    (meters) => { return meters / 0.0254m; }
+                    inches => inches * 0.0254d,
+                    meters => meters / 0.0254d
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Inch(decimal value)
+        public Inch(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Inch(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Inch(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Inch(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

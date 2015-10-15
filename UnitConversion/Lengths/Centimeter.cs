@@ -16,8 +16,8 @@
                 (
                     "Centimeter",
                     "cm",
-                    (centimeters) => { return centimeters * 0.01m; },
-                    (meters) => { return meters / 0.01m; }
+                    centimeters => centimeters * 0.01d,
+                    meters      => meters / 0.01d
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Centimeter(decimal value)
+        public Centimeter(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Centimeter(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Centimeter(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Centimeter(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

@@ -64,6 +64,15 @@
     <Compile Include="UnitConversion\Lengths\Millimeter.cs" />
     <Compile Include="UnitConversion\Lengths\Thou.cs" />
     <Compile Include="UnitConversion\Lengths\Yard.cs" />
+    <Compile Include="UnitConversion\Mass.cs" />
+    <Compile Include="UnitConversion\Masses\Gram.cs" />
+    <Compile Include="UnitConversion\Masses\Kilogram.cs" />
+    <Compile Include="UnitConversion\Masses\MetricTonne.cs" />
+    <Compile Include="UnitConversion\Masses\Milligram.cs" />
+    <Compile Include="UnitConversion\Masses\Ounce.cs" />
+    <Compile Include="UnitConversion\Masses\Pound.cs" />
+    <Compile Include="UnitConversion\Masses\Slug.cs" />
+    <Compile Include="UnitConversion\Masses\SolarMass.cs" />
     <Compile Include="UnitConversion\Measure.cs" />
     <Compile Include="UnitConversion\Temperature.cs" />
     <Compile Include="UnitConversion\Temperatures\Celsius.cs" />

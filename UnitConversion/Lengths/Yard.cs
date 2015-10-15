@@ -16,8 +16,8 @@
                 (
                     "Yard",
                     "yd",
-                    (yards) => yards * 0.9144m,
-                    (meters) => meters / 0.9144m
+                    yards  => yards * 0.9144d,
+                    meters => meters / 0.9144d
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Yard(decimal value)
+        public Yard(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Yard(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Yard(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Yard(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
 

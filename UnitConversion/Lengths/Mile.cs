@@ -16,8 +16,8 @@
                 (
                     "mile",
                     "mi",
-                    (miles) => { return miles * 1609.344m; },
-                    (meters) => { return meters / 1609.344m; }
+                    miles => { return miles * 1609.344d; },
+                    meters => { return meters / 1609.344d; }
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Mile(decimal value)
+        public Mile(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Mile(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Mile(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Mile(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

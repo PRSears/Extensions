@@ -16,8 +16,8 @@
                 (
                     "Millimeter",
                     "mm",
-                    (millimeters) => { return millimeters * 0.001m; },
-                    (meters) => { return meters / 0.001m; }
+                    millimeters => millimeters * 0.001d,
+                    meters      => meters / 0.001d
                 );
             }
         }
@@ -34,7 +34,7 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Millimeter(decimal value)
+        public Millimeter(double value)
         {
             Value = value;
         }
@@ -43,18 +43,9 @@
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Millimeter(double value)
-        {
-            Value = (decimal)value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
         public Millimeter(int value)
         {
-            Value = (decimal)value;
+            Value = value;
         }
 
         /// <summary>
@@ -63,7 +54,7 @@
         /// <param name="value"></param>
         public Millimeter(Length value)
         {
-            SIValue = value.SIValue;
+            SiValue = value.SiValue;
         }
 
         #region //Operator overloads

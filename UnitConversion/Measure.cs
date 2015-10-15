@@ -11,7 +11,7 @@ namespace Extender.UnitConversion
         /// <summary>
         /// Gets or sets the actual stored value, in appropriate SI units.
         /// </summary>
-        public decimal SIValue
+        public double SiValue
         {
             get;
             set;
@@ -20,15 +20,15 @@ namespace Extender.UnitConversion
         /// <summary>
         /// Gets or sets the converted value for this specific implementation of measure.
         /// </summary>
-        public virtual decimal Value
+        public double Value
         {
             get
             {
-                return Unit.Converter.ConvertFromSI(SIValue);
+                return Unit.Converter.ConvertFromSi(SiValue);
             }
             set
             {
-                SIValue = Unit.Converter.ConvertToSI(value);
+                SiValue = Unit.Converter.ConvertToSi(value);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Extender.UnitConversion
         /// <summary>
         /// Gets or sets the acceptable margin of error for equality comparison. 
         /// </summary>
-        public decimal Sigma
+        public double Sigma
         {
             get;
             set;
@@ -54,7 +54,7 @@ namespace Extender.UnitConversion
         /// </summary>
         public Measure()
         {
-            Sigma = 0.000001m;
+            Sigma = 0.000001d;
         }
 
         /// <summary>
@@ -67,10 +67,7 @@ namespace Extender.UnitConversion
         public virtual TOut ConvertTo<TOut>()
             where TOut : Measure, new()
         {
-            TOut converted = new TOut();
-            converted.SIValue = this.SIValue;
-
-            return converted;
+            return new TOut {SiValue = SiValue};
         }
 
         /// <summary>
@@ -83,17 +80,51 @@ namespace Extender.UnitConversion
         /// </typeparam>
         /// <returns>Converted object of type TOut.</returns>
         protected TOut ConvertTo<TOut, TVerify>()
-            where TOut : Measure, new()
-            where TVerify : Measure
+            where TOut      : Measure, new()
+            where TVerify   : Measure
         {
             TOut converted = new TOut();
 
             if(converted.IsNotA<TVerify>())
-                throw new Exceptions.TypeArgumentException($"TOut must be a type of {typeof(TVerify).ToString()}.", "TOut");
+                throw new Exceptions.TypeArgumentException($"TOut must be a type of {typeof(TVerify)}.", "TOut");
 
-            converted.SIValue = this.SIValue;
+            converted.SiValue = SiValue;
 
             return converted;
+        }
+
+        /// <summary>
+        /// Converts a value from one unit to another.
+        /// </summary>
+        /// <typeparam name="TIn">Type (unit) of measure value starts in.</typeparam>
+        /// <typeparam name="TOut">Type (unit) of measure value should be converted to.</typeparam>
+        /// <param name="value">The value (in units of TIn) to convert to units of TOut.</param>
+        /// <returns>The converted value.</returns>
+        public static double Convert<TIn, TOut>(double value)
+            where TIn  : Measure, new()
+            where TOut : Measure, new()
+        {
+            var constructed = new TIn {Value = value};
+
+            return constructed.ConvertTo<TOut>().Value;
+        }
+
+        /// <summary>
+        /// Converts a value from one unit to another.
+        /// </summary>
+        /// <typeparam name="TIn">Type (unit) of measure value starts in.</typeparam>
+        /// <typeparam name="TOut">Type (unit) of measure value should be converted to.</typeparam>
+        /// <param name="value">The value (in units of TIn) to convert to units of TOut.</param>
+        /// <returns>The converted value.</returns>
+        public static double? Convert<TIn, TOut>(double? value)
+            where TIn : Measure, new()
+            where TOut : Measure, new()
+        {
+            if (!value.HasValue) return null;
+
+            var constructed = new TIn {Value = value.Value};
+
+            return constructed.ConvertTo<TOut>().Value;
         }
 
         /// <returns>
@@ -103,7 +134,7 @@ namespace Extender.UnitConversion
         {
             byte[][] blocks = new byte[2][];
 
-            blocks[0] = BitConverterEx.GetBytes(SIValue);
+            blocks[0] = BitConverter.GetBytes(SiValue);
             blocks[1] = BitConverter.GetBytes(Unit.GetHashCode());
 
             return BitConverter.ToInt32(ObjectUtils.Hashing.GenerateHashCode(blocks), 0);
@@ -119,20 +150,20 @@ namespace Extender.UnitConversion
 
             Measure b = (Measure)obj;
 
-            return Math.Abs(this.SIValue - b.SIValue) < Sigma;
+            return Math.Abs(SiValue - b.SiValue) < Sigma;
         }
 
         /// <summary>
         /// Checks for equality within the provided tolerance.
         /// </summary>
-        public bool Equals(object obj, decimal tolerance)
+        public bool Equals(object obj, double tolerance)
         {
             if (!(obj is Measure))
                 return false;
 
             Measure b = (Measure)obj;
 
-            return Math.Abs(this.SIValue - b.SIValue) < tolerance;
+            return Math.Abs(SiValue - b.SiValue) < tolerance;
         }
 
         /// <returns>
@@ -160,42 +191,30 @@ namespace Extender.UnitConversion
         /// <summary>
         /// Gets the name of the unit.
         /// </summary>
-        public string Label
-        {
-            get;
-            protected set;
-        }
+        public readonly string Label;
 
         /// <summary>
         /// Gets the symbol of this unit used in short form (abbreviation).
         /// </summary>
-        public string Symbol
-        {
-            get;
-            protected set;
-        }
+        public readonly string Symbol;
 
         /// <summary>
         /// Gets the converter object.
         /// </summary>
-        public Converter Converter
-        {
-            get;
-            protected set;
-        }
+        public readonly Converter Converter;
 
         /// <summary>
         /// Constructs a new UnitInfo object.
         /// </summary>
         /// <param name="label">The name of this unit.</param>
         /// <param name="symbol">The symbol of this unit used in short forms or abbreviations.</param>
-        /// <param name="toSI">Function for converting this unit to SI base unit.</param>
-        /// <param name="fromSI">Function for converting SI base units to this unit.</param>
-        public UnitInfo(string label, string symbol, Func<decimal, decimal> toSI, Func<decimal, decimal> fromSI)
+        /// <param name="toSi">Function for converting this unit to SI base unit.</param>
+        /// <param name="fromSi">Function for converting SI base units to this unit.</param>
+        public UnitInfo(string label, string symbol, Func<double, double> toSi, Func<double, double> fromSi)
         {
-            this.Label      = label;
-            this.Symbol     = symbol;
-            this.Converter  = new Converter(toSI, fromSI);
+            Label      = label;
+            Symbol     = symbol;
+            Converter  = new Converter(toSi, fromSi);
         }
 
         /// <returns>
@@ -227,7 +246,7 @@ namespace Extender.UnitConversion
             if (!(obj is UnitInfo))
                 return false;
 
-            return this.GetHashCode().Equals((obj as UnitInfo).GetHashCode());
+            return GetHashCode().Equals(((UnitInfo)obj).GetHashCode());
         }
     }
 
@@ -236,18 +255,18 @@ namespace Extender.UnitConversion
     /// </summary>
     public class Converter
     {
-        private Func<decimal, decimal> ToSI;
-        private Func<decimal, decimal> FromSI;
+        private readonly Func<double, double> _ToSi;
+        private readonly Func<double, double> _FromSi;
 
         /// <summary>
         /// Constructs a new Converter object.
         /// </summary>
-        /// <param name="convertToSI">Function for converting to SI units.</param>
-        /// <param name="convertFromSI">Function for converting from SI units. </param>
-        public Converter(Func<decimal, decimal> convertToSI, Func<decimal, decimal> convertFromSI)
+        /// <param name="convertToSi">Function for converting to SI units.</param>
+        /// <param name="convertFromSi">Function for converting from SI units. </param>
+        public Converter(Func<double, double> convertToSi, Func<double, double> convertFromSi)
         {
-            ToSI    = convertToSI;
-            FromSI  = convertFromSI;
+            _ToSi    = convertToSi;
+            _FromSi  = convertFromSi;
         }
 
         /// <summary>
@@ -255,11 +274,11 @@ namespace Extender.UnitConversion
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public decimal ConvertToSI(decimal value)
+        public double ConvertToSi(double value)
         {
-            decimal? tmpVal = ToSI?.Invoke(value);
+            double? tmpVal = _ToSi?.Invoke(value);
 
-            return tmpVal.HasValue ? tmpVal.Value : value;
+            return tmpVal ?? value;
         }
 
         /// <summary>
@@ -267,11 +286,11 @@ namespace Extender.UnitConversion
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public decimal ConvertFromSI(decimal value)
+        public double ConvertFromSi(double value)
         {
-            decimal? tmpVal = FromSI?.Invoke(value);
+            double? tmpVal = _FromSi?.Invoke(value);
 
-            return tmpVal.HasValue ? tmpVal.Value : value;
+            return tmpVal ?? value;
         }
     }
 }
