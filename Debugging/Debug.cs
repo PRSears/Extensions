@@ -50,7 +50,7 @@ namespace Extender.Debugging
             return string.Format
             (
                 " [{0} @ {1}] {2}",
-                warnLevel.ToUpper(),
+                warnLevel.ToUpper().PadRight(5),
                 DateTime.Now.ToString(),
                 message
             );

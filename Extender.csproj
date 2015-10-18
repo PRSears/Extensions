@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\TypeArgumentException.cs" />
+    <Compile Include="IO\ActionTextWriter.cs" />
     <Compile Include="IO\CsvSerializer.cs" />
     <Compile Include="IO\Paths.cs" />
     <Compile Include="IO\SerializedArray.cs" />
