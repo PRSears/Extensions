@@ -161,6 +161,15 @@ namespace Extender.IO
         }
 
         /// <summary>
+        /// When overridden in a derived class, queues a SerializeTask to reload the SourceList. Should be non-blocking.
+        /// </summary>
+        public abstract void QueueReload();
+        /// <summary>
+        /// When overridden in a derived class, queues a SerializeTask to save the SourceList. Should be non-blocking.
+        /// </summary>
+        public abstract void QueueSave();
+
+        /// <summary>
         /// Replaces (overwrites) this class' public members with current values taken from the XML file.
         /// This method is blocking and doesn't account for simultaneous reads and writes. 
         /// </summary>

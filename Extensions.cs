@@ -847,7 +847,7 @@ namespace Extender
 
     internal class ArrayTraverse
     {
-        public int[] Position;
+        public  int[] Position;
         private int[] maxLengths;
 
         public ArrayTraverse(Array array)
