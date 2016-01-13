@@ -80,7 +80,21 @@ namespace Extender.Debugging
             if (condition)
                 WriteMessage(message, warnLevel);
         }
+
+        /// <summary>
+        /// Formats the provided message, and writes it to the currently active Console.
+        /// Current system time is automatically added to the message.
+        /// </summary>
+        /// <param name="message">Message to write to the Console.</param>
+        /// <param name="warnLevel">Optionally, specify what type of message this is.</param>
+        /// <param name="condition">Controls whether the message is sent to the console.</param>
+        public static void WriteMessage(string message, WarnLevel warnLevel, bool condition = true)
+        {
+            WriteMessage(message, condition, Enum.GetName(typeof(WarnLevel), warnLevel)?.ToUpper());
+        }
     }
+
+    public enum WarnLevel { Debug, Info, Warn, Sql, Error, Excep }
 
     public static class RectangleDebug
     {

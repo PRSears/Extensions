@@ -87,7 +87,18 @@ namespace Extender.WPF
             Children.Add(view);
             view.Closed += Child_Closed;
 
-            view.Show();
+            try
+            {
+                view.Show();
+            }
+            catch (InvalidOperationException e)
+            {
+                if (e.Message.Contains("Cannot set Visibility"))
+                {
+                    Debugging.Debug.WriteMessage("WindowManager.OpenWindow could not show the window as it was not initialized.", "warn");
+                }
+                else throw;
+            }
 
             OnWindowOpened(view);
         }
