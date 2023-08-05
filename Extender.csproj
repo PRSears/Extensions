@@ -32,8 +32,6 @@
     <DocumentationFile>bin\Release\Extender.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -50,7 +48,6 @@
     <Compile Include="Exceptions\TypeArgumentException.cs" />
     <Compile Include="IO\ActionTextWriter.cs" />
     <Compile Include="IO\CsvSerializer.cs" />
-    <Compile Include="IO\Paths.cs" />
     <Compile Include="IO\SerializedArray.cs" />
     <Compile Include="ObjectUtils\BitmapCompare.cs" />
     <Compile Include="ObjectUtils\ReferenceEqualityComparer.cs" />
@@ -79,8 +76,6 @@
     <Compile Include="UnitConversion\Temperatures\Celsius.cs" />
     <Compile Include="UnitConversion\Temperatures\Fehrenheit.cs" />
     <Compile Include="UnitConversion\Temperatures\Kelvin.cs" />
-    <Compile Include="Windows\Cross.cs" />
-    <Compile Include="Windows\XmlColor.cs" />
     <Compile Include="Databases\IStorable.cs" />
     <Compile Include="Date\DateRange.cs" />
     <Compile Include="Debugging\Debug.cs" />
@@ -90,13 +85,6 @@
     <Compile Include="IO\Streams.cs" />
     <Compile Include="ObjectUtils\Hashing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WPF\BusySplash.cs" />
-    <Compile Include="WPF\Checkable.cs" />
-    <Compile Include="WPF\CompletedMessagebox.cs" />
-    <Compile Include="WPF\ConfirmationDialog.cs" />
-    <Compile Include="WPF\ViewModel.cs" />
-    <Compile Include="WPF\RelayCommand.cs" />
-    <Compile Include="WPF\WindowManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

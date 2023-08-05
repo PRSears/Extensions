@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Extender")]
+[assembly: AssemblyTitle("Extender-Linux")]
 [assembly: AssemblyDescription("Library containing extension and helper methods.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Patrick Sears")]
 [assembly: AssemblyProduct("Extender")]
-[assembly: AssemblyCopyright("Copyright © Patrick Sears 2016")]
+[assembly: AssemblyCopyright("Copyright © Patrick Sears 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
