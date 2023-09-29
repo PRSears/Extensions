@@ -97,6 +97,11 @@ namespace Extender
         {
             return range.Overlaps(date);
         }
+
+        public static bool Elapsed(this TimeSpan span, DateTime startTime)
+        {
+            return (DateTime.Now - startTime) >= span;
+        }
     }
 
     public static class Sizes
@@ -106,27 +111,9 @@ namespace Extender
             return (size.Width > size.Height) ? true : false;
         }
 
-        public static bool WidthIsLongEdge(this System.Windows.Size size)
-        {
-            return (size.Width > size.Height) ? true : false;
-        }
-        
-        public static double AspectRatio(this System.Windows.Size size)
-        {
-            return ((double)size.Width / (double)size.Height);
-        }
-
         public static double AspectRatio(this System.Drawing.Size size)
         {
             return ((double)size.Width / (double)size.Height);
-        }
-        
-        /// <returns>
-        /// Returns the length of the longest edge of this size.
-        /// </returns>
-        public static double LongEdge(this System.Windows.Size size)
-        {
-            return (size.WidthIsLongEdge()) ? size.Width : size.Height;
         }
 
         /// <returns>
@@ -139,24 +126,12 @@ namespace Extender
 
         public static int CompareAreaTo(this System.Drawing.Size a, System.Drawing.Size b)
         {
-            int a_area = a.Width * a.Height;
-            int b_area = b.Width * b.Height;
+            int aArea = a.Width * a.Height;
+            int bArea = b.Width * b.Height;
 
-            if (a_area > b_area)
+            if (aArea > bArea)
                 return 1;
-            else if (a_area == b_area)
-                return 0;
-            else
-                return -1;
-        }
-        public static int CompareAreaTo(this System.Windows.Size a, System.Windows.Size b)
-        {
-            double a_area = a.Width * a.Height;
-            double b_area = b.Width * b.Height;
-
-            if (a_area > b_area)
-                return 1;
-            else if (a_area == b_area)
+            else if (aArea == bArea)
                 return 0;
             else
                 return -1;
@@ -172,21 +147,9 @@ namespace Extender
             else                            return false;
         }
 
-        /// <returns>Returns true if the Width of this Rect is greater than its height.</returns>
-        public static bool IsHorizontal(this System.Windows.Rect rect)
-        {
-            if (rect.Width > rect.Height)   return true;
-            else                            return false;
-        }
 
         /// <returns>Returns true if the Height of this Rectangle is greater than its width.</returns>
-        public static bool IsVertical(this Rectangle rect)
-        {
-            return !IsHorizontal(rect);
-        }
-
-        /// <returns>Returns true if the Height of this Rect is greater than its width.</returns>
-        public static bool IsVertical(this System.Windows.Rect rect)
+        public static bool IsVertical(this System.Drawing.Rectangle rect)
         {
             return !IsHorizontal(rect);
         }
@@ -200,29 +163,11 @@ namespace Extender
                 (int)Math.Round(rect.Height / 2d)
             );
         }
-
-        /// <returns>Returns a point representing the center of this Rect.</returns>
-        public static System.Windows.Point GetCenter(this System.Windows.Rect rect)
-        {
-            return new System.Windows.Point
-            (
-                rect.Width / 2d,
-                rect.Height / 2d
-            );
-        }
         
         /// <summary>
         /// Compares the area of this rectangle to another. 
         /// </summary>
         public static int CompareAreaTo(this Rectangle a, Rectangle b)
-        {
-            return a.Size.CompareAreaTo(b.Size);
-        }
-
-        /// <summary>
-        /// Compares the area of this rectangle to another. 
-        /// </summary>
-        public static int CompareAreaTo(this System.Windows.Rect a, System.Windows.Rect b)
         {
             return a.Size.CompareAreaTo(b.Size);
         }
@@ -237,290 +182,6 @@ namespace Extender
                 a.X - b.X,
                 a.Y - b.Y
             );
-        }
-    }
-
-    public static class Bitmaps
-    {
-        /// <summary>
-        /// Returns the length of the longest edge of this image, in pixels.
-        /// </summary>
-        public static int LongEdge(this Bitmap image)
-        {
-            return (image.Width > image.Height) ? image.Width : image.Height;
-        }
-
-        /// <summary>
-        /// Creates a copy of this Bitmap and resizes it.
-        /// Does not presevce aspect ratio, or performs any translations.
-        /// </summary>
-        /// <param name="newSize">The target size to scale the new Bitmap to.</param>
-        /// <returns>Resized copy of this Bitmap.</returns>
-        public static Bitmap Resize(this Bitmap image, Size newSize)
-        {
-            if (image.Size.Equals(newSize))
-                return image;
-
-            return new Bitmap(image, newSize);
-        }
-
-        /// <summary>
-        /// Creates a copy of this Bitmap and resizes it.
-        /// Preserves the original aspect ratio while resizing and cropping
-        /// to fill the target size.
-        /// </summary>
-        /// <param name="targetSize">
-        /// The target size to scale the new bitmap to.
-        /// The resulting bitmap will fill the entire area of targetSize.
-        /// </param>
-        /// <returns>Resized copy of this Bitmap</returns>
-        public static Bitmap ResizeFill(this Bitmap image, Size targetSize)
-        {
-            if (image.Size.Equals(targetSize))
-                return image;
-
-            Size scaleFitWidth  = Bitmaps.FitWidthSize(image.Size, targetSize);
-            Size scaleFitHeight = Bitmaps.FitHeightSize(image.Size, targetSize);
-
-            Bitmap scaled;
-
-            //
-            // Scale to...
-            // Try to fit width
-            if (targetSize.Width > targetSize.Height)
-            {
-                // Make sure the scaled dimensions are tall enough
-                if (!(scaleFitWidth.Height < targetSize.Height))
-                    scaled = new Bitmap(image, scaleFitWidth);
-                else
-                    scaled = new Bitmap(image, scaleFitHeight);
-            }
-            // Try to fit height
-            else
-            {
-                // Make sure the scaled dimensions are wide enough
-                if (!(scaleFitHeight.Width < targetSize.Width))
-                    scaled = new Bitmap(image, scaleFitHeight);
-                else
-                    scaled = new Bitmap(image, scaleFitWidth);
-            }
-
-            //
-            // Crop to fit targetSize if neccessary
-            Bitmap final = (scaled.Size.Equals(targetSize)) ? (Bitmap)scaled.Clone() : scaled.CropCenteredFill(targetSize);
-            scaled.Dispose();
-
-            return final;
-        }
-
-        /// <summary>
-        /// Resizes the Bitmap so the longest edge matches targetLength.
-        /// </summary>
-        /// <param name="targetLength">The length, in pixels, of the longest side after resize.</param>
-        /// <returns>Copy of this Bitmap resized to fit the longest edge inside targetLength.</returns>
-        public static Bitmap ResizeToLongEdge(this Bitmap image, double targetLength)
-        {
-            if (image.Size.WidthIsLongEdge()) // make sure resizing is neccessary
-            {
-                if (image.Width == targetLength) return image;
-            }
-            else
-            {
-                if (image.Height == targetLength) return image;
-            }
-
-            return image.ResizeFill(
-                         FitLongEdgeSize(image.Size, targetLength));
-        }
-
-        /// <summary>
-        /// Resizes the Bitmap so the longest edge matches targetLength.
-        /// </summary>
-        /// <param name="targetLength">The length, in pixels, of the longest side after resize.</param>
-        /// <returns>Copy of this Bitmap resized to fit the longest edge inside targetLength.</returns>
-        public static Bitmap ResizeToLongEdge(this Bitmap image, int targetLength)
-        {
-            return ResizeToLongEdge(image, (double)targetLength);
-        }
-
-        /// <summary>
-        /// Resizes the Bitmap so the longest edge matches targetLength.
-        /// </summary>
-        /// <param name="targetLength">The length, in pixels, of the longest side after resize.</param>
-        /// <returns>Copy of this Bitmap resized to fit the longest edge inside targetLength.</returns>
-        public static Bitmap ResizeToLongEdge(this Bitmap image, float targetLength)
-        {
-            return ResizeToLongEdge(image, (double)targetLength);
-        }
-
-        /// <summary>
-        /// Creates a copy of this Bitmap, cropped and centered to fill as much of
-        /// targetDimensions as possible.
-        /// Does not perform any scaling.
-        /// </summary>
-        /// <param name="targetDimensions">The target size to crop the copied Bitmap to.</param>
-        /// <returns>Cropped copy of this Bitmap.</returns>
-        public static Bitmap CropCenteredFill(this Bitmap image, Size targetDimensions)
-        {
-            return image.Clone
-                (
-                    GetCropBoundsCentered(image, targetDimensions),
-                    image.PixelFormat
-                );
-        }
-
-        /// <summary>
-        /// Creates a copy of the specified portion of this bitmap.
-        /// </summary>
-        /// <param name="cropArea">Rectangle specifying the desired portion of the bitmap</param>
-        /// <returns>A new bitmap created from the area of this bitmap specified
-        /// by the cropArea Rectangle.</returns>
-        public static Bitmap Slice(this Bitmap image, Rectangle cropArea)
-        {
-            return image.Clone
-                (
-                    cropArea,
-                    image.PixelFormat
-                );
-        }
-
-
-        /// <summary>
-        /// Calculates the bounds of a rectangle representing the selection to crop to
-        /// in order to center the image inside the target size.
-        /// </summary>
-        /// <param name="targetSize"></param>
-        /// <returns>
-        /// Rectangle located at the point to start cropping, with the width and height of 
-        /// the crop area.
-        /// </returns>
-        public static Rectangle GetCenteredCropBounds(this Bitmap image, Size targetSize)
-        {
-            return GetCropBoundsCentered(image, targetSize);
-        }
-
-        /// <summary>
-        /// Uses a stream to open the file at the specified path, while allowing reads and writes
-        /// to occur from other proccesses. Creates a copy of the image, and returns it as a Bitmap.
-        /// </summary>
-        /// <param name="path">Full path to the image file being loaded.</param>
-        /// <returns>Bitmap copied from the bytes read from the image file at the specified path.</returns>
-        public static Bitmap FromFile(string path)
-        {
-            using (Stream fileStream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                var buffer = IO.Streams.ReadFully(fileStream);
-                var memory_stream = new MemoryStream(buffer);
-                var image = System.Drawing.Image.FromStream(memory_stream);
-
-                return (Bitmap)image;
-            }
-        }
-
-        private static Rectangle GetCropBoundsCentered(Rectangle imageBounds, Rectangle targetBounds)
-        {
-            if (imageBounds.CompareAreaTo(targetBounds) < 0)
-                throw new ArgumentOutOfRangeException("imageBounds is smaller than the targetBounds.");
-            else if (imageBounds.CompareAreaTo(targetBounds) == 0)
-                return imageBounds;
-
-            Extender.Drawing.Offset offset = new Extender.Drawing.Offset(imageBounds, targetBounds);
-
-            return new Rectangle
-                (
-                    imageBounds.X + offset.HalfX,
-                    imageBounds.Y + offset.HalfY,
-                    targetBounds.Width,
-                    targetBounds.Height
-                );
-        }
-
-        private static Rectangle GetCropBoundsCentered(Bitmap image, Size targetSize)
-        {
-            return GetCropBoundsCentered
-                (
-                    new Rectangle(0, 0, image.Width, image.Height),
-                    new Rectangle(0, 0, targetSize.Width, targetSize.Height)
-                );
-        }
-
-        private static Size FitWidthSize(Size imageSize, Size targetSize)
-        {
-            float multiplier = ((float)targetSize.Width) / ((float)imageSize.Width);
-
-            return new Size
-                (
-                    targetSize.Width,
-                    (int)(Math.Round(imageSize.Height * multiplier))
-                );
-        }
-
-        private static Size FitHeightSize(Size imageSize, Size targetSize)
-        {
-            float multiplier = ((float)targetSize.Height) / ((float)imageSize.Height);
-
-            return new Size
-                (
-                    (int)Math.Round(imageSize.Width * multiplier),
-                    targetSize.Height
-                );
-        }
-
-        private static Size FitLongEdgeSize(Size imageSize, double targetLength)
-        {
-            if(imageSize.AspectRatio() >= 0)
-            {
-                // Width is longer than height
-                double multiplier = ((double)targetLength / (double)imageSize.Width);
-
-                return new Size
-                (
-                    (int)Math.Round(targetLength),
-                    (int)Math.Round(imageSize.Height * multiplier)
-                );
-            }
-            else
-            {
-                // Height is longer than width
-                double multiplier = ((double)targetLength / (double)imageSize.Height);
-
-                return new Size
-                (
-                    (int)Math.Round(imageSize.Width * multiplier),
-                    (int)Math.Round(targetLength)
-                );
-            }
-        }
-    }
-
-    public static class Images
-    {
-        /// <summary>
-        /// Gets this image's ImageFormat through brute force comparisons.
-        /// </summary>
-        /// <returns>The ImageFormat for this image.</returns>
-        public static System.Drawing.Imaging.ImageFormat GetImageFormat(this System.Drawing.Image img)
-        {
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg))
-                return System.Drawing.Imaging.ImageFormat.Jpeg;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Bmp))
-                return System.Drawing.Imaging.ImageFormat.Bmp;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png))
-                return System.Drawing.Imaging.ImageFormat.Png;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Emf))
-                return System.Drawing.Imaging.ImageFormat.Emf;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Exif))
-                return System.Drawing.Imaging.ImageFormat.Exif;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Gif))
-                return System.Drawing.Imaging.ImageFormat.Gif;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Icon))
-                return System.Drawing.Imaging.ImageFormat.Icon;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.MemoryBmp))
-                return System.Drawing.Imaging.ImageFormat.MemoryBmp;
-            if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Tiff))
-                return System.Drawing.Imaging.ImageFormat.Tiff;
-            else
-                return System.Drawing.Imaging.ImageFormat.Wmf;    
         }
     }
 
@@ -748,39 +409,65 @@ namespace Extender
 
     public static class Maths
     {
-        public static bool RoughEquals(this double a, double b, double sigma)
+        public static bool RoughEquals(this double a, double b, double s = 1e-6)
         {
-            return Math.Abs(a - b) < sigma;
+            return Math.Abs(a - b) < s;
         }
 
-        public static bool RoughEquals(this int a, double b, double sigma)
+        public static bool RoughEquals(this int a, double b, double s = 1e-6)
         {
-            return Math.Abs(a - b) < sigma;
+            return Math.Abs(a - b) < s;
         }
 
-        public static bool RoughEquals(this double a, int b, double sigma)
+        public static bool RoughEquals(this double a, int b, double s = 1e-6)
         {
-            return Maths.RoughEquals(b, a, sigma);
+            return Maths.RoughEquals(b, a, s);
         }
 
-        public static bool RoughEquals(this long a, double b, double sigma)
+        public static bool RoughEquals(this long a, double b, double s = 1e-6)
         {
-            return Math.Abs(a - b) < sigma;
+            return Math.Abs(a - b) < s;
         }
 
-        public static bool RoughEquals(this double a, long b, double sigma)
+        public static bool RoughEquals(this double a, long b, double s = 1e-6)
         {
-            return Maths.RoughEquals(b, a, sigma);
+            return Maths.RoughEquals(b, a, s);
         }
 
-        public static bool RoughEquals(this float a, double b, double sigma)
+        public static bool RoughEquals(this float a, double b, double s = 1e-6)
         {
-            return Math.Abs(a - b) < sigma;
+            return Math.Abs(a - b) < s;
         }
 
-        public static bool RoughEquals(this double a, float b, double sigma)
+        public static bool RoughEquals(this double a, float b, double s = 1e-6)
         {
-            return Maths.RoughEquals(b, a, sigma);
+            return Maths.RoughEquals(b, a, s);
+        }
+        
+        public static bool RoughEquals(this float a, float b, double s = 1e-6)
+        {
+            return Math.Abs(a - b) < s;
+        }
+
+        public static bool RoughEquals(this float? a, float? b, double s = 1e-6)
+        {
+            if (a == null || b == null) return a == null && b == null;
+
+            return RoughEquals((float) a, (float) b, s);
+        }
+
+        public static bool RoughEquals(this float? a, double? b, double s = 1e-6)
+        {
+            if (a == null || b == null) return a == null && b == null;
+            
+            return RoughEquals((float) a, (double) b, s);
+        }
+
+        public static bool RoughEquals(this double? a, float? b, double s = 1e-6)
+        {
+            if (a == null || b == null) return a == null && b == null;
+            
+            return RoughEquals((double) a, (float) b, s);
         }
 
         // Courtesy of Kay Zed from StackOverflow: http://stackoverflow.com/a/32903747/344541

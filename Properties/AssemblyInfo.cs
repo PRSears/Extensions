@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Extender-Linux")]
+[assembly: AssemblyTitle("Extender-Core")]
 [assembly: AssemblyDescription("Library containing extension and helper methods.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Patrick Sears")]

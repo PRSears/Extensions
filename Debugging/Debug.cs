@@ -10,19 +10,19 @@ namespace Extender.Debugging
     /// </remarks>
     public static class NonBlockingConsole
     {
-        private static BlockingCollection<string> W_Queue = new BlockingCollection<string>();
+        private static readonly BlockingCollection<string> WriteQueue =
+            new BlockingCollection<string>();
 
         static NonBlockingConsole()
         {
             var thread = new Thread
-            (
-                () =>
-                {
-                    while (true) Console.WriteLine(W_Queue.Take());
-                }
-            );
+                (
+                 () =>
+                 {
+                     while (true) Console.WriteLine(WriteQueue.Take());
+                 }
+                ) { IsBackground = true };
 
-            thread.IsBackground = true;
             thread.Start();
         }
 
@@ -30,10 +30,7 @@ namespace Extender.Debugging
         /// Uses a background thread to write to the console without blocking.
         /// </summary>
         /// <param name="value">Value to write to the console.</param>
-        public static void WriteLine(string value)
-        {
-            W_Queue.Add(value);
-        }
+        public static void WriteLine(string value) { WriteQueue.Add(value); }
     }
 
     // TODO Add support for multiple console output streams
@@ -47,13 +44,7 @@ namespace Extender.Debugging
         /// <returns>Ex: " [DEBUG @ 12:35 2014-06-11] Something went wrong!"</returns>
         public static string CreateDebugText(string message, string warnLevel = "debug")
         {
-            return string.Format
-            (
-                " [{0} @ {1}] {2}",
-                warnLevel.ToUpper().PadRight(5),
-                DateTime.Now.ToString(),
-                message
-            );
+            return $"[{warnLevel.ToUpper(),-5} @ {DateTime.Now.ToString()}] {message}";
         }
 
         /// <summary>
@@ -94,18 +85,21 @@ namespace Extender.Debugging
         }
     }
 
-    public enum WarnLevel { Debug, Info, Warn, Sql, Error, Excep }
+    public enum WarnLevel
+    {
+        Debug,
+        Info,
+        Warn,
+        Sql,
+        Error,
+        Excep
+    }
 
     public static class RectangleDebug
     {
         public static string ToDebugString(this System.Drawing.Rectangle r)
         {
-            return String.Format
-            (
-                "({0}, {1}) [Width {2}, Height {3}]",
-                r.X, r.Y,
-                r.Width, r.Height
-            );
+            return $"({r.X}, {r.Y}) [Width {r.Width}, Height {r.Height}]";
         }
 
         public static void WriteToConsole(this System.Drawing.Rectangle rect)
@@ -115,7 +109,7 @@ namespace Extender.Debugging
 
         public static void WriteToConsole(this System.Drawing.Rectangle rect, string message)
         {
-            NonBlockingConsole.WriteLine(String.Format("{0} > {1}", message, rect.ToDebugString()));
+            NonBlockingConsole.WriteLine($"{message} > {rect.ToDebugString()}");
         }
     }
 }
