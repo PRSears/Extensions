@@ -13,27 +13,9 @@ public sealed class Meter : Length
         get { return new UnitInfo("meter", "m", si => si, meters => meters); }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public Meter() { }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="value"></param>
-    public Meter(double value) { Value = value; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="value"></param>
-    public Meter(int value) { Value = value; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="value"></param>
+    public Meter(double value) { Value   = value; }
+    public Meter(int    value) { Value   = value; }
     public Meter(Length value) { SiValue = value.SiValue; }
 
     public static implicit operator Kilometer(Meter  x) { return new Kilometer(x); }
