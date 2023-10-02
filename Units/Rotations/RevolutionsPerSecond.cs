@@ -1,6 +1,3 @@
 ﻿namespace Extender.Units.Rotations;
 
-public class RevolutionsPerSecond
-{
-    
-}
+public class RevolutionsPerSecond { }

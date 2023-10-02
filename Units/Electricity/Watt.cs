@@ -1,6 +1,3 @@
 ﻿namespace Extender.Units.Electricity;
 
-public class Watt
-{
-    
-}
+public class Watt { }

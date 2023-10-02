@@ -20,24 +20,12 @@ public sealed class TeraHertz : Frequency
     public TeraHertz(int value) { Value = value; }
 
     public TeraHertz(Frequency value) { SiValue = value.SiValue; }
-    
-    public static implicit operator Hertz(TeraHertz x)
-    {
-        return new Hertz(x);
-    }
-    
-    public static implicit operator KiloHertz(TeraHertz x)
-    {
-        return new KiloHertz(x);
-    }
-    
-    public static implicit operator MegaHertz(TeraHertz x)
-    {
-        return new MegaHertz(x);
-    }
-    
-    public static implicit operator GigaHertz(TeraHertz x)
-    {
-        return new GigaHertz(x);
-    }
+
+    public static implicit operator Hertz(TeraHertz x) { return new Hertz(x); }
+
+    public static implicit operator KiloHertz(TeraHertz x) { return new KiloHertz(x); }
+
+    public static implicit operator MegaHertz(TeraHertz x) { return new MegaHertz(x); }
+
+    public static implicit operator GigaHertz(TeraHertz x) { return new GigaHertz(x); }
 }

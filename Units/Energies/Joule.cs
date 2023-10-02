@@ -1,6 +1,3 @@
 ﻿namespace Extender.Units.Energies;
 
-public class Joule
-{
-    
-}
+public class Joule { }

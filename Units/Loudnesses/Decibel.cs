@@ -1,6 +1,3 @@
 ﻿namespace Extender.Units.Loudnesses;
 
-public class Decibel
-{
-    
-}
+public class Decibel { }

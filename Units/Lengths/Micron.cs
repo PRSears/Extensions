@@ -1,136 +1,52 @@
-﻿namespace Extender.Units.Lengths
+﻿namespace Extender.Units.Lengths;
+
+/// <summary>
+/// Helper class for storing and converting a length/distance in microns.
+/// </summary>
+public sealed class Micron : Length
 {
     /// <summary>
-    /// Helper class for storing and converting a length/distance in microns.
+    /// Gets information pertaining to the units of this Length.
     /// </summary>
-    public sealed class Micron : Length
+    public override UnitInfo Unit
     {
-        /// <summary>
-        /// Gets information pertaining to the units of this Length.
-        /// </summary>
-        public override UnitInfo Unit
+        get
         {
-            get
-            {
-                return new UnitInfo
-                (
-                    "Micron",
-                    "\u00B5m",
-                    microns => microns * 0.000001d,
-                    meters  => meters / 0.000001d
-                );
-            }
+            return new UnitInfo
+                ("Micron", "\u00B5m", microns => microns * 0.000001d, meters => meters / 0.000001d);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Micron()
-        {
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        public Micron(double value)
-        {
-            Value = value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        public Micron(int value)
-        {
-            Value = value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        public Micron(Length value)
-        {
-            SiValue = value.SiValue;
-        }
-
-        #region //Operator overloads
-
-        /// <summary>
-        /// Implicit conversion from Micron to Meter
-        /// </summary>
-        public static implicit operator Meter(Micron x)
-        {
-            return new Meter(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Centimeter
-        /// </summary>
-        public static implicit operator Centimeter(Micron x)
-        {
-            return new Centimeter(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Millimeter
-        /// </summary>
-        public static implicit operator Millimeter(Micron x)
-        {
-            return new Millimeter(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Kilometer
-        /// </summary>
-        public static implicit operator Kilometer(Micron x)
-        {
-            return new Kilometer(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Inch
-        /// </summary>
-        public static explicit operator Inch(Micron x)
-        {
-            return new Inch(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Thou
-        /// </summary>
-        public static explicit operator Thou(Micron x)
-        {
-            return new Thou(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Foot
-        /// </summary>
-        public static explicit operator Foot(Micron x)
-        {
-            return new Foot(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Mile
-        /// </summary>
-        public static explicit operator Mile(Micron x)
-        {
-            return new Mile(x);
-        }
-
-        /// <summary>
-        /// Implicit conversion from Micron to Yard
-        /// </summary>
-        public static explicit operator Yard(Micron x)
-        {
-            return new Yard(x);
-        }
-
-        #endregion
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Micron() { }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    public Micron(double value) { Value = value; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    public Micron(int value) { Value = value; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    public Micron(Length value) { SiValue = value.SiValue; }
+
+    public static implicit operator Meter(Micron      x) { return new Meter(x); }
+    public static implicit operator Centimeter(Micron x) { return new Centimeter(x); }
+    public static implicit operator Millimeter(Micron x) { return new Millimeter(x); }
+    public static implicit operator Kilometer(Micron  x) { return new Kilometer(x); }
+    public static explicit operator Inch(Micron       x) { return new Inch(x); }
+    public static explicit operator Thou(Micron       x) { return new Thou(x); }
+    public static explicit operator Foot(Micron       x) { return new Foot(x); }
+    public static explicit operator Mile(Micron       x) { return new Mile(x); }
+    public static explicit operator Yard(Micron       x) { return new Yard(x); }
 }

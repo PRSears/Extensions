@@ -1,6 +1,3 @@
 ﻿namespace Extender.Units.Energies;
 
-public class GigaJoule
-{
-    
-}
+public class GigaJoule { }

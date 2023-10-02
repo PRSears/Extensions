@@ -1,56 +1,49 @@
 ﻿using System.IO;
 
-namespace Extender.IO
+namespace Extender.IO;
+
+public class Streams
 {
-    public class Streams
+    public static byte[] ReadFully(Stream input)
     {
-        public static byte[] ReadFully(Stream input)
+        byte[] buffer = new byte[16 * 1024];
+        using (var ms = new MemoryStream())
         {
-            byte[] buffer = new byte[16 * 1024];
-            using(MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                    ms.Write(buffer, 0, read);
+            int read;
+            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                ms.Write(buffer, 0, read);
 
-                return ms.ToArray();
-            }
+            return ms.ToArray();
+        }
+    }
+
+    public static bool IsFileInUse(FileInfo file)
+    {
+        FileStream stream = null;
+
+        try
+        {
+            stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        }
+        catch (IOException)
+        {
+            return true;
+        }
+        finally
+        {
+            if (stream != null)
+                stream.Close();
         }
 
-        public static bool IsFileInUse(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
-            }
-
-            return false;
-        }
+        return false;
+    }
 
 
-        [System.Obsolete]
-        public FileStream TryOpenRead(string pathToFile)
-        {
-            if (!File.Exists(pathToFile)) return null;
+    [Obsolete]
+    public FileStream TryOpenRead(string pathToFile)
+    {
+        if (!File.Exists(pathToFile)) return null;
 
-            return new FileStream
-            (
-                pathToFile,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.ReadWrite
-            );
-        }
+        return new FileStream(pathToFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
     }
 }

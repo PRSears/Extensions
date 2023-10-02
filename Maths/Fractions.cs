@@ -30,7 +30,7 @@ public struct Fraction
         if (numerator > denominator)
         {
             WholePart   = (int) Math.Floor((double) numerator / denominator);
-            Numerator   = numerator - (denominator * WholePart);
+            Numerator   = numerator - denominator * WholePart;
             Denominator = denominator;
         }
         else
@@ -66,36 +66,23 @@ public static class Fractions
     public static Fraction RealToFraction(double value, double marginOfError)
     {
         if (marginOfError <= 0.0 || marginOfError >= 1.0)
-        {
             throw new ArgumentOutOfRangeException
                 (nameof(marginOfError), "Must be between 0 and 1 (exclusive).");
-        }
 
         int sign = Math.Sign(value);
 
-        if (sign == -1)
-        {
-            value = Math.Abs(value);
-        }
+        if (sign == -1) value = Math.Abs(value);
 
         if (sign != 0)
-        {
             // marginOfError is the maximum relative marginOfError; convert to absolute
             marginOfError *= value;
-        }
 
         int n = (int) Math.Floor(value);
         value -= n;
 
-        if (value < marginOfError)
-        {
-            return new Fraction(sign * n, 1);
-        }
+        if (value < marginOfError) return new Fraction(sign * n, 1);
 
-        if (1 - marginOfError < value)
-        {
-            return new Fraction(sign * (n + 1), 1);
-        }
+        if (1 - marginOfError < value) return new Fraction(sign * (n + 1), 1);
 
         // The lower fraction is 0/1
         int lowerN = 0;

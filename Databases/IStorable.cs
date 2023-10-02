@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace Extender.Databases
-{
-    public interface IStorable
-    {
-        Guid UniqueID { get; }
+namespace Extender.Databases;
 
-        byte[] GetHashData();
-        void ForceNewUniqueID();
-    }
+public interface IStorable
+{
+    Guid UniqueID { get; }
+
+    byte[] GetHashData();
+    void   ForceNewUniqueID();
 }

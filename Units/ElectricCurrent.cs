@@ -2,8 +2,5 @@
 
 public abstract class ElectricCurrent : Measure
 {
-    public override TOut ConvertTo<TOut>()
-    {
-        return base.ConvertTo<TOut, ElectricCurrent>();
-    }    
+    public override TOut ConvertTo<TOut>() { return base.ConvertTo<TOut, ElectricCurrent>(); }
 }
