@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Extender.Debugging;
 
 
 namespace Extender.IO
@@ -307,7 +308,7 @@ namespace Extender.IO
         {
             T deserialized = (T)Activator.CreateInstance(typeof(T));
 
-            if (item == null || item.Count() < 1)
+            if (item == null || !item.Any())
                 return deserialized;
 
             string[] head = PublicPropertyNames;
@@ -317,14 +318,10 @@ namespace Extender.IO
             {
                 Debugging.Debug.WriteMessage
                 (
-                    string.Format
-                    (
-                        "[{0}] Number of properties in header ({1}) does not match number of properties being deserialized ({2}).",
-                        this.GetType().Name,
-                        head.Length.ToString(),
-                        item.Length.ToString()
-                    ),
-                    "warn"
+                    $"[{this.GetType().Name}] Number of properties in header " +
+                    "({head.Length.ToString()}) does not match number of properties "+
+                    "being deserialized ({item.Length.ToString()}).",
+                    WarnLevel.Warn
                 );
             }
             #endregion
@@ -344,16 +341,17 @@ namespace Extender.IO
                                           .ConvertFromInvariantString(item[i])
                         );
                     }
-                    else if (cur.PropertyType.Equals(typeof(string)))
+                    else if (cur.PropertyType == typeof(string))
                         cur.SetValue(deserialized, item[i]);
-                    else if (cur.PropertyType.Equals(typeof(char)))
+                    else if (cur.PropertyType == typeof(char))
                         cur.SetValue(deserialized, item[i].ToCharArray()[0]);
                     else
                         throw new ArgumentException
                         (
-                            "Not all types being deserialized are primitives or string.\n" +
-                            "Use the [System.Xml.Serialization.XmlIgnore] attribute on any other properties so they aren't serialized.",
-                            "item"
+                            "Not all types being deserialized are primitives or string.\n"         +
+                            "Use the [System.Xml.Serialization.XmlIgnore] attribute on any other " +
+                            "properties so they aren't serialized.",
+                            nameof(item)
                         );
                 }
             }

@@ -8,4 +8,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Version />
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="UnitConversion\UnitConversion.rar" />
+  </ItemGroup>
 </Project>

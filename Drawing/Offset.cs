@@ -29,24 +29,12 @@ namespace Extender.Drawing
         /// <summary>
         /// (Read-Only) Gets a rounded figure representing half of the X property.
         /// </summary>
-        public int HalfX
-        {
-            get
-            {
-                return (int)Math.Round(this.X / 2f);
-            }
-        }
+        public int HalfX => (int)Math.Round(this.X / 2f);
 
         /// <summary>
         /// (Read-Only) Gets a rounded figure representing half of the Y property.
         /// </summary>
-        public int HalfY
-        {
-            get
-            {
-                return (int)Math.Round(this.Y / 2f);
-            }
-        }
+        public int HalfY => (int)Math.Round(this.Y / 2f);
 
         /// <summary>
         /// Constructs a new Offset from the provided offset values.

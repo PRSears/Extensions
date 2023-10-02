@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Threading;
 
 namespace Extender.Debugging
@@ -16,12 +17,12 @@ namespace Extender.Debugging
         static NonBlockingConsole()
         {
             var thread = new Thread
-                (
-                 () =>
-                 {
-                     while (true) Console.WriteLine(WriteQueue.Take());
-                 }
-                ) { IsBackground = true };
+            (
+                () =>
+                {
+                    while (true) Console.WriteLine(WriteQueue.Take());
+                }
+            ) { IsBackground = true };
 
             thread.Start();
         }
@@ -41,10 +42,13 @@ namespace Extender.Debugging
         /// Generates a string of debug text containing the current time and a 
         /// specified message.
         /// </summary>
-        /// <returns>Ex: " [DEBUG @ 12:35 2014-06-11] Something went wrong!"</returns>
+        /// <returns>Ex: " [DEBUG @ 2023-09-29T17:28:11.3434984-06:00] Something went wrong!"
+        /// </returns>
         public static string CreateDebugText(string message, string warnLevel = "debug")
         {
-            return $"[{warnLevel.ToUpper(),-5} @ {DateTime.Now.ToString()}] {message}";
+            // ISO 8601 time format. ie: 2023-09-29T17:28:11.3434984-06:00
+            return
+                $"[{warnLevel.ToUpper(),-5} @ {DateTime.Now:O}] {message}";
         }
 
         /// <summary>
@@ -52,36 +56,21 @@ namespace Extender.Debugging
         /// Current system time is automatically added to the message.
         /// </summary>
         /// <param name="message">Message to write to the Console.</param>
+        /// <param name="condition">A flag controlling whether the message is sent
+        /// to the console.</param>
         /// <param name="warnLevel">Optionally, specify what type of message this is.</param>
-        public static void WriteMessage(string message, string warnLevel = "debug")
-        {
-            NonBlockingConsole.WriteLine(CreateDebugText(message, warnLevel));
-        }
-
-
-        /// <summary>
-        /// Formats the provided message, and writes it to the currently active Console.
-        /// Current system time is automatically added to the message.
-        /// </summary>
-        /// <param name="message">Message to write to the Console.</param>
-        /// <param name="condition">Controls whether the message is sent to the console.</param>
-        /// <param name="warnLevel">Optionally, specify what type of message this is.</param>
-        public static void WriteMessage(string message, bool condition, string warnLevel = "debug")
+        public static void WriteMessage
+            (string message, WarnLevel warnLevel = WarnLevel.Debug, bool condition = true)
         {
             if (condition)
-                WriteMessage(message, warnLevel);
-        }
-
-        /// <summary>
-        /// Formats the provided message, and writes it to the currently active Console.
-        /// Current system time is automatically added to the message.
-        /// </summary>
-        /// <param name="message">Message to write to the Console.</param>
-        /// <param name="warnLevel">Optionally, specify what type of message this is.</param>
-        /// <param name="condition">Controls whether the message is sent to the console.</param>
-        public static void WriteMessage(string message, WarnLevel warnLevel, bool condition = true)
-        {
-            WriteMessage(message, condition, Enum.GetName(typeof(WarnLevel), warnLevel)?.ToUpper());
+                NonBlockingConsole.WriteLine
+                (
+                    CreateDebugText
+                    (
+                        message,
+                        Enum.GetName(typeof(WarnLevel), warnLevel)?.ToUpper() ?? string.Empty
+                    )
+                );
         }
     }
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Extender.Debugging;
 
 namespace Extender.IO
 {
@@ -99,7 +100,7 @@ namespace Extender.IO
                 Debugging.Debug.WriteMessage
                 (
                     "SourceList has not been initialized.",
-                    "warn"
+                    WarnLevel.Warn
                 );
                 return false;
             }
@@ -125,7 +126,7 @@ namespace Extender.IO
                 Extender.Debugging.Debug.WriteMessage
                 (
                     $"item ({item.ToString()}) could not be removed from SourceList because it did not exist.",
-                    "warn"
+                    WarnLevel.Warn
                 );
                 return false; // 'item' was never found
             }

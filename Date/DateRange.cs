@@ -64,12 +64,9 @@ namespace Extender.Date
 
         public override string ToString()
         {
-            return string.Format
-                (
-                    "({0}) ==> ({1})",
-                    this.Start.ToString("YYYY-MM-dd HH:mm:ss"),
-                    this.End.ToString("YYYY-MM-dd HH:mm:ss")
-                );
+            return
+                $"({this.Start.ToString("YYYY-MM-dd HH:mm:ss")}) ==> " +
+                $"({this.End.ToString("YYYY-MM-dd HH:mm:ss")})";
         }
 
         public override bool Equals(object obj)
