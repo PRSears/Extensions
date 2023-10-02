@@ -17,7 +17,7 @@
                     "Millimeter",
                     "mm",
                     millimeters => millimeters * 0.001d,
-                    meters      => meters / 0.001d
+                    meters => meters           / 0.001d
                 );
             }
         }
@@ -25,111 +25,72 @@
         /// <summary>
         /// 
         /// </summary>
-        public Millimeter()
-        {
-
-        }
+        public Millimeter() { }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Millimeter(double value)
-        {
-            Value = value;
-        }
+        public Millimeter(double value) { Value = value; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Millimeter(int value)
-        {
-            Value = value;
-        }
+        public Millimeter(int value) { Value = value; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
-        public Millimeter(Length value)
-        {
-            SiValue = value.SiValue;
-        }
+        public Millimeter(Length value) { SiValue = value.SiValue; }
 
         #region //Operator overloads
 
         /// <summary>
         /// Implicit conversion from Millimeter to Meter
         /// </summary>
-        public static implicit operator Meter(Millimeter x)
-        {
-            return new Meter(x);
-        }
+        public static implicit operator Meter(Millimeter x) { return new Meter(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Kilometer
         /// </summary>
-        public static implicit operator Kilometer(Millimeter x)
-        {
-            return new Kilometer(x);
-        }
+        public static implicit operator Kilometer(Millimeter x) { return new Kilometer(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Centimeter
         /// </summary>
-        public static implicit operator Centimeter(Millimeter x)
-        {
-            return new Centimeter(x);
-        }
+        public static implicit operator Centimeter(Millimeter x) { return new Centimeter(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Micron
         /// </summary>
-        public static implicit operator Micron(Millimeter x)
-        {
-            return new Micron(x);
-        }
+        public static implicit operator Micron(Millimeter x) { return new Micron(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Inch
         /// </summary>
-        public static explicit operator Inch(Millimeter x)
-        {
-            return new Inch(x);
-        }
+        public static explicit operator Inch(Millimeter x) { return new Inch(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Thou
         /// </summary>
-        public static explicit operator Thou(Millimeter x)
-        {
-            return new Thou(x);
-        }
+        public static explicit operator Thou(Millimeter x) { return new Thou(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Foot
         /// </summary>
-        public static explicit operator Foot(Millimeter x)
-        {
-            return new Foot(x);
-        }
+        public static explicit operator Foot(Millimeter x) { return new Foot(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Mile
         /// </summary>
-        public static explicit operator Mile(Millimeter x)
-        {
-            return new Mile(x);
-        }
+        public static explicit operator Mile(Millimeter x) { return new Mile(x); }
 
         /// <summary>
         /// Implicit conversion from Millimeter to Yard
         /// </summary>
-        public static explicit operator Yard(Millimeter x)
-        {
-            return new Yard(x);
-        }
+        public static explicit operator Yard(Millimeter x) { return new Yard(x); }
 
         #endregion
     }
