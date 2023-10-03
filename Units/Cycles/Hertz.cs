@@ -24,6 +24,4 @@ public sealed class Hertz : Frequency
     public static implicit operator GigaHertz(Hertz x) { return new GigaHertz(x); }
 
     public static implicit operator TeraHertz(Hertz x) { return new TeraHertz(x); }
-
-    // TODO Add casting operators
 }
