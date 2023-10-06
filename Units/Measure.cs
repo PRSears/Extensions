@@ -3,6 +3,15 @@ using System.Text;
 
 namespace Extender.Units;
 
+// TODO convert to nullable values ... This'll be a real pain in the ass.
+// TODO Add new units:
+//      - Bits (kilo, mega, giga, tera, peta)
+//      - Bytes (kilo, mega, giga, tera, peta, kibi, gibi, tibi, pibi)
+//      - bitrates (bps, kbps, Mbps, Gbps, Tbps, Bps, kBps, MBps, GBps, TBps)
+//      - Rotations
+//      - Time (?) Do I really need another abstraction layers for DateTime?
+// ... fml
+
 /// <summary>
 /// Abstract representation of a qualitative property with a unit.
 /// </summary>

@@ -1,10 +1,10 @@
 ﻿namespace Extender.Units.Cycles;
 
-public class DutyCycle : Measure
+public sealed class DutyCycle : Percentage
 {
     public override UnitInfo Unit
     {
-        get { return new UnitInfo("duty cycle", "%", x => x, y => y); }
+        get { return new UnitInfo("duty cycle", "%", to => to, from => from); }
     }
 
     public DutyCycle() { }

@@ -9,6 +9,6 @@
         <Version/>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="UnitConversion\UnitConversion.rar"/>
+      <Folder Include="Units\Data\" />
     </ItemGroup>
 </Project>
