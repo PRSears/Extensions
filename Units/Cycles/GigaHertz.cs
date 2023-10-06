@@ -28,4 +28,34 @@ public sealed class GigaHertz : Frequency
     public static implicit operator MegaHertz(GigaHertz x) { return new MegaHertz(x); }
 
     public static implicit operator TeraHertz(GigaHertz x) { return new TeraHertz(x); }
+
+    public static explicit operator RadiansPerSecond(GigaHertz x)
+    {
+        return new RadiansPerSecond(x);
+    }
+
+    public static explicit operator RevolutionsPerSecond(GigaHertz x)
+    {
+        return new RevolutionsPerSecond(x);
+    }
+
+    public static explicit operator RevolutionsPerMinute(GigaHertz x)
+    {
+        return new RevolutionsPerMinute(x);
+    }
+
+    public static explicit operator RevolutionsPerHour(GigaHertz x)
+    {
+        return new RevolutionsPerHour(x);
+    }
+
+    public static explicit operator RevolutionsPerDay(GigaHertz x)
+    {
+        return new RevolutionsPerDay(x);
+    }
+
+    public static explicit operator RevolutionsPerYear(GigaHertz x)
+    {
+        return new RevolutionsPerYear(x);
+    }
 }

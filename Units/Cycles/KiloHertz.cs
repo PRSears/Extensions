@@ -28,4 +28,34 @@ public sealed class KiloHertz : Frequency
     public static implicit operator GigaHertz(KiloHertz x) { return new GigaHertz(x); }
 
     public static implicit operator TeraHertz(KiloHertz x) { return new TeraHertz(x); }
+
+    public static explicit operator RadiansPerSecond(KiloHertz x)
+    {
+        return new RadiansPerSecond(x);
+    }
+
+    public static explicit operator RevolutionsPerSecond(KiloHertz x)
+    {
+        return new RevolutionsPerSecond(x);
+    }
+
+    public static explicit operator RevolutionsPerMinute(KiloHertz x)
+    {
+        return new RevolutionsPerMinute(x);
+    }
+
+    public static explicit operator RevolutionsPerHour(KiloHertz x)
+    {
+        return new RevolutionsPerHour(x);
+    }
+
+    public static explicit operator RevolutionsPerDay(KiloHertz x)
+    {
+        return new RevolutionsPerDay(x);
+    }
+
+    public static explicit operator RevolutionsPerYear(KiloHertz x)
+    {
+        return new RevolutionsPerYear(x);
+    }
 }
