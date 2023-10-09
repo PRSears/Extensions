@@ -20,6 +20,6 @@ public class Percentage : Measure
     }
 
     public Percentage(int value) { Value = value; }
-    
+
     public override TOut ConvertTo<TOut>() { return base.ConvertTo<TOut, Percentage>(); }
 }

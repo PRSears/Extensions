@@ -9,7 +9,7 @@
         <Version/>
     </PropertyGroup>
     <ItemGroup>
-      <Folder Include="Units\AngularFrequencies\" />
-      <Folder Include="Units\Data\" />
+        <Folder Include="Units\AngularFrequencies\"/>
+        <Folder Include="Units\DataRates\"/>
     </ItemGroup>
 </Project>

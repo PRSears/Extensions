@@ -42,7 +42,7 @@ public sealed class RevolutionsPerMinute : Frequency
     }
 
     public static explicit operator Hertz(RevolutionsPerMinute x) { return new Hertz(x); }
-    
+
     public static explicit operator KiloHertz(RevolutionsPerMinute x) { return new KiloHertz(x); }
 
     public static explicit operator MegaHertz(RevolutionsPerMinute x) { return new MegaHertz(x); }

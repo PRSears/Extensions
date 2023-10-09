@@ -9,20 +9,11 @@ public class Unitless : Measure
 
     public Unitless() { }
 
-    public Unitless(double value)
-    {
-        Value = value;
-    }
+    public Unitless(double value) { Value = value; }
 
-    public Unitless(float value)
-    {
-        Value = value;
-    }
+    public Unitless(float value) { Value = value; }
 
-    public Unitless(int value)
-    {
-        Value = value;
-    }
-    
+    public Unitless(int value) { Value = value; }
+
     public override TOut ConvertTo<TOut>() { return base.ConvertTo<TOut, Unitless>(); }
 }

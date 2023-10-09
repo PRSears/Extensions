@@ -8,9 +8,11 @@ namespace Extender.Units;
 //      - Bits (kilo, mega, giga, tera, peta)
 //      - Bytes (kilo, mega, giga, tera, peta, kibi, gibi, tibi, pibi)
 //      - bitrates (bps, kbps, Mbps, Gbps, Tbps, Bps, kBps, MBps, GBps, TBps)
-//      - Rotations
-//      - Time (?) Do I really need another abstraction layers for DateTime?
+//      - ~~Rotations~~
+//      - Time (?) Do I really need another abstraction layer for DateTime?
 // ... fml
+
+// TODO (bash?) script to generate the casting operator overloads
 
 /// <summary>
 /// Abstract representation of a qualitative property with a unit.
