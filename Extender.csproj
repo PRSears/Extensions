@@ -10,6 +10,5 @@
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Units\AngularFrequencies\"/>
-        <Folder Include="Units\DataRates\"/>
     </ItemGroup>
 </Project>

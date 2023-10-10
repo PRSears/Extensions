@@ -3,16 +3,10 @@ using System.Text;
 
 namespace Extender.Units;
 
-// TODO convert to nullable values ... This'll be a real pain in the ass.
+// THOUGHT Add support for nullable values... This would be a real pain in the ass.
+//         Do I even want this? 
 // TODO Add new units:
-//      - Bits (kilo, mega, giga, tera, peta)
-//      - Bytes (kilo, mega, giga, tera, peta, kibi, gibi, tibi, pibi)
-//      - bitrates (bps, kbps, Mbps, Gbps, Tbps, Bps, kBps, MBps, GBps, TBps)
-//      - ~~Rotations~~
 //      - Time (?) Do I really need another abstraction layer for DateTime?
-// ... fml
-
-// TODO (bash?) script to generate the casting operator overloads
 
 /// <summary>
 /// Abstract representation of a qualitative property with a unit.
