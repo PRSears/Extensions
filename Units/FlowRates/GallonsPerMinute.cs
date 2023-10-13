@@ -46,4 +46,9 @@ public sealed class GallonsPerMinute : FlowRate
     {
         return new LitresPerSecond(x);
     }
+
+    public static implicit operator LitresPerHour(GallonsPerMinute x)
+    {
+        return new LitresPerHour(x);
+    }
 }

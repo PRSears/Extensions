@@ -37,4 +37,9 @@ public sealed class CubicMetresPerSecond : FlowRate
     {
         return new LitresPerSecond(x);
     }
+
+    public static implicit operator LitresPerHour(CubicMetresPerSecond x)
+    {
+        return new LitresPerHour(x);
+    }
 }

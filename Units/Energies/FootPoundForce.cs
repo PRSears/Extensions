@@ -21,14 +21,18 @@ public sealed class FootPoundForce : Energy
     public FootPoundForce(int    value) { Value   = value; }
     public FootPoundForce(Energy value) { SiValue = value.SiValue; }
 
-    public static implicit operator MegaJoule(FootPoundForce x) { return new MegaJoule(x); }
-    public static implicit operator GigaJoule(FootPoundForce x) { return new GigaJoule(x); }
-    public static explicit operator Btu(FootPoundForce       x) { return new Btu(x); }
-    public static explicit operator Joule(FootPoundForce     x) { return new Joule(x); }
-    public static explicit operator TonsOfTnt(FootPoundForce x) { return new TonsOfTnt(x); }
+    public static implicit operator Btu(FootPoundForce           x) { return new Btu(x); }
+    public static implicit operator GigaJoule(FootPoundForce     x) { return new GigaJoule(x); }
+    public static implicit operator Joule(FootPoundForce         x) { return new Joule(x); }
+    public static implicit operator KilowattHour(FootPoundForce  x) { return new KilowattHour(x); }
+    public static implicit operator MegaJoule(FootPoundForce     x) { return new MegaJoule(x); }
+    public static implicit operator MilliwattHour(FootPoundForce x) { return new MilliwattHour(x); }
 
-    public static explicit operator ThermochemicalCalorie(FootPoundForce x)
+    public static implicit operator ThermochemicalCalorie(FootPoundForce x)
     {
         return new ThermochemicalCalorie(x);
     }
+
+    public static implicit operator TonsOfTnt(FootPoundForce x) { return new TonsOfTnt(x); }
+    public static implicit operator WattHour(FootPoundForce  x) { return new WattHour(x); }
 }

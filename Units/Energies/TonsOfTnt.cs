@@ -12,14 +12,18 @@ public sealed class TonsOfTnt : Energy
     public TonsOfTnt(int    value) { Value   = value; }
     public TonsOfTnt(Energy value) { SiValue = value.SiValue; }
 
-    public static implicit operator MegaJoule(TonsOfTnt      x) { return new MegaJoule(x); }
+    public static implicit operator Btu(TonsOfTnt            x) { return new Btu(x); }
+    public static implicit operator FootPoundForce(TonsOfTnt x) { return new FootPoundForce(x); }
     public static implicit operator GigaJoule(TonsOfTnt      x) { return new GigaJoule(x); }
-    public static explicit operator Btu(TonsOfTnt            x) { return new Btu(x); }
-    public static explicit operator FootPoundForce(TonsOfTnt x) { return new FootPoundForce(x); }
-    public static explicit operator Joule(TonsOfTnt          x) { return new Joule(x); }
+    public static implicit operator Joule(TonsOfTnt          x) { return new Joule(x); }
+    public static implicit operator KilowattHour(TonsOfTnt   x) { return new KilowattHour(x); }
+    public static implicit operator MegaJoule(TonsOfTnt      x) { return new MegaJoule(x); }
+    public static implicit operator MilliwattHour(TonsOfTnt  x) { return new MilliwattHour(x); }
 
-    public static explicit operator ThermochemicalCalorie(TonsOfTnt x)
+    public static implicit operator ThermochemicalCalorie(TonsOfTnt x)
     {
         return new ThermochemicalCalorie(x);
     }
+
+    public static implicit operator WattHour(TonsOfTnt x) { return new WattHour(x); }
 }

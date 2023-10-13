@@ -16,14 +16,28 @@ public sealed class ThermochemicalCalorie : Energy
     public ThermochemicalCalorie(int    value) { Value   = value; }
     public ThermochemicalCalorie(Energy value) { SiValue = value.SiValue; }
 
-    public static implicit operator MegaJoule(ThermochemicalCalorie x) { return new MegaJoule(x); }
-    public static implicit operator GigaJoule(ThermochemicalCalorie x) { return new GigaJoule(x); }
-    public static explicit operator Btu(ThermochemicalCalorie       x) { return new Btu(x); }
-    public static explicit operator TonsOfTnt(ThermochemicalCalorie x) { return new TonsOfTnt(x); }
-    public static explicit operator Joule(ThermochemicalCalorie     x) { return new Joule(x); }
+    public static implicit operator Btu(ThermochemicalCalorie x) { return new Btu(x); }
 
-    public static explicit operator FootPoundForce(ThermochemicalCalorie x)
+    public static implicit operator FootPoundForce(ThermochemicalCalorie x)
     {
         return new FootPoundForce(x);
     }
+
+    public static implicit operator GigaJoule(ThermochemicalCalorie x) { return new GigaJoule(x); }
+    public static implicit operator Joule(ThermochemicalCalorie     x) { return new Joule(x); }
+
+    public static implicit operator KilowattHour(ThermochemicalCalorie x)
+    {
+        return new KilowattHour(x);
+    }
+
+    public static implicit operator MegaJoule(ThermochemicalCalorie x) { return new MegaJoule(x); }
+
+    public static implicit operator MilliwattHour(ThermochemicalCalorie x)
+    {
+        return new MilliwattHour(x);
+    }
+
+    public static implicit operator TonsOfTnt(ThermochemicalCalorie x) { return new TonsOfTnt(x); }
+    public static implicit operator WattHour(ThermochemicalCalorie  x) { return new WattHour(x); }
 }
