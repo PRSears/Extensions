@@ -126,12 +126,10 @@ public abstract class Measure
     /// </summary>
     public override bool Equals(object obj)
     {
-        if (!(obj is Measure))
+        if (obj is not Measure other)
             return false;
 
-        var b = (Measure) obj;
-
-        return Math.Abs(SiValue - b.SiValue) < Sigma;
+        return Math.Abs(SiValue - other.SiValue) < Sigma;
     }
 
     /// <summary>
@@ -139,12 +137,10 @@ public abstract class Measure
     /// </summary>
     public bool Equals(object obj, double tolerance)
     {
-        if (!(obj is Measure))
+        if (obj is not Measure other)
             return false;
 
-        var b = (Measure) obj;
-
-        return Math.Abs(SiValue - b.SiValue) < tolerance;
+        return Math.Abs(SiValue - other.SiValue) < tolerance;
     }
 
     /// <returns>
@@ -155,9 +151,10 @@ public abstract class Measure
     /// <returns>
     /// String representation of this Measure.
     /// </returns>
-    public string ToString(string formatSpecifier)
+    public string ToString(string formatSpecifier = "", bool separateValueAndSymbol = false)
     {
-        return $"{Value.ToString(formatSpecifier)}{Unit.Symbol}";
+        return
+            $"{Value.ToString(formatSpecifier)}{(separateValueAndSymbol ? " " : string.Empty)}{Unit.Symbol}";
     }
 }
 
